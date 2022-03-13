@@ -8,20 +8,6 @@
 #include "../include/func.h"
 #include "../include/struct.h"
 
-void draw_menu_weap(global_s *all)
-{
-    sfRenderWindow_clear(all->wind, sfBlack);
-    sfRenderWindow_drawSprite(all->wind, all->sprite.level.bg_weap, NULL);
-    sfRenderWindow_drawSprite(all->wind, all->sprite.level.left_ar, NULL);
-    sfRenderWindow_drawSprite(all->wind, all->sprite.level.right_ar, NULL);
-    sfRenderWindow_drawSprite(all->wind, all->sprite.menu.bt_close, NULL);
-    print_weap(all);
-    draw_pop_up(all->sprite.weapons.unlock1 , all, &all->pop6);
-    draw_pop_up(all->sprite.weapons.unlock2, all, &all->pop7);
-    draw_pop_up(all->sprite.weapons.unlock3, all, &all->pop8);
-    sfRenderWindow_display(all->wind);
-}
-
 void close_weap(global_s *all)
 {
     sfVector2f size = {1, 1};
@@ -34,57 +20,15 @@ void close_weap(global_s *all)
         if (all->event->type == sfEvtMouseButtonPressed) {
             all->STATUS = MAP;
             restart_pop(&all->pop5);
+            restart_pop(&all->pop1);
         }
     }
     if (all->event->type == sfEvtKeyPressed && all->event->key.code == sfKeyEscape) {
         all->STATUS = MAP;
         restart_pop(&all->pop5);
+        restart_pop(&all->pop1);
     }
 
-}
-
-void can_buy_weap(global_s *all, int wep)
-{
-    sfTexture *texture;
-    sfVector2f pos = {-1000, 0};
-    switch (wep)
-    {
-    case 2:
-        if (all->info_p->coins >= 800) {
-            sfSprite_setPosition(all->sprite.weapons.unlock1, pos);
-            texture = sfTexture_createFromFile("res/weapons/wp2.png", NULL);
-            sfSprite_setTexture(all->sprite.weapons.wp2, texture, sfFalse);
-            all->info_p->coins = all->info_p->coins - 800;
-            all->info_p->tower = all->info_p->tower + 1000;
-        }
-        break;
-    case 3:
-        if (all->info_p->coins >= 800) {
-            sfSprite_setPosition(all->sprite.weapons.unlock2, pos);
-            texture = sfTexture_createFromFile("res/weapons/wp3.png", NULL);
-            sfSprite_setTexture(all->sprite.weapons.wp3, texture, sfFalse);
-            all->info_p->coins = all->info_p->coins - 800;
-            all->info_p->tower = all->info_p->tower + 100;
-        }
-        break;
-    case 4:
-        if (all->info_p->coins >= 1000) {
-            sfSprite_setPosition(all->sprite.weapons.unlock3, pos);
-            texture = sfTexture_createFromFile("res/weapons/wp4.png", NULL);
-            sfSprite_setTexture(all->sprite.weapons.wp4, texture, sfFalse);
-            all->info_p->coins = all->info_p->coins - 1000;
-            all->info_p->tower = all->info_p->tower + 10;
-        }
-        break;
-    case 5:
-        if (all->info_p->coins >= 1200) {
-            texture = sfTexture_createFromFile("res/weapons/wp5.png", NULL);
-            sfSprite_setTexture(all->sprite.weapons.wp5, texture, sfFalse);
-            all->info_p->coins = all->info_p->coins - 1200;
-            all->info_p->tower = all->info_p->tower + 1;
-        }
-        break;
-    }
 }
 
 void buy_weapons(global_s *all)
@@ -125,28 +69,6 @@ void refresh_clock_pop(global_s *all)
 {
     all->sprite.other.cl_pop.time = sfClock_getElapsedTime(all->sprite.other.cl_pop.clock);
     all->sprite.other.cl_pop.seconds = all->sprite.other.cl_pop.time.microseconds / 1000000.0;
-}
-
-void init_weapons(global_s *all)
-{
-    all->sprite.level.bg_weap = csS("res/menu/menu_weap/bg_weap.png", 0, 0, tsvf(1, 1));
-    create_weapons(all);
-    sfVector2f pos = {2000, 0};
-    if (is_weap_unclock(all, 2) == 1)
-        sfSprite_setPosition(all->sprite.weapons.unlock1, pos);
-    if (is_weap_unclock(all, 3) == 1)
-        sfSprite_setPosition(all->sprite.weapons.unlock2, pos);
-    if (is_weap_unclock(all, 4) == 1)
-        sfSprite_setPosition(all->sprite.weapons.unlock3, pos);
-    // if (is_weap_unclock(all, 5))
-    //     sfSprite_setPosition(all->sprite.weapons.unlock1, pos);
-    // all->pop1 = pop_up(all, 0.5, 0.04,  all->sprite.weapons.wp1);
-    // all->pop2 = pop_up(all, 0.5, 0.04,  all->sprite.weapons.wp2);
-    // all->pop3 = pop_up(all, 0.5, 0.04,  all->sprite.weapons.wp3);
-    // all->pop4 = pop_up(all, 0.5, 0.04,  all->sprite.weapons.wp4);
-    all->pop6 = pop_up(all, 0.5, 0.04,  all->sprite.weapons.unlock1);
-    all->pop7 = pop_up(all, 0.5, 0.04,  all->sprite.weapons.unlock2);
-    all->pop8 = pop_up(all, 0.5, 0.04,  all->sprite.weapons.unlock3);
 }
 
 void my_weapons(global_s *all)

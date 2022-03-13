@@ -8,31 +8,90 @@
 #include "../include/func.h"
 #include "../include/struct.h"
 
-void move_bullet(tow_g *tow, int len_bul)
+void move_bullet(tow_g *tow, int len_bul, global_s *all)
 {
     enemy_s en;
+    sfVector2f pos = sfSprite_getPosition(tow->sprite);
+    if (all->verif_b == 1 && pos.x < 1000 && pos.y >= 700) {
+        tow->bullet = free_element_at(tow->bullet, len_bul - 1);
+        all->verif_b = 0;
+        len_bul = len_bul - 1;
+    }
+    if (all->verif_b2 == 1 && pos.x > 1000 && pos.y >= 700) {
+        tow->bullet = free_element_at(tow->bullet, len_bul - 1);
+        all->verif_b2 = 0;
+        len_bul = len_bul - 1;
+    }
     for (int i = 0 ; i < len_bul; i++) {
         en = get_enemy(tow->bullet, i);
-        if (sfSprite_getPosition(tow->sprite).x < 1000)
-            sfSprite_move(en.sprite, tsvf(-10, 0));
-        else {
+        if (sfSprite_getPosition(tow->sprite).x < 1000) {
+            // printf("float: %f\n", en.move_b.y);
+            sfSprite_move(en.sprite, tsvf(-10,( en.move_b.y / 10)));
+            if (sfSprite_getPosition(en.sprite).x < 0) {
+                tow->bullet = free_element_at(tow->bullet, len_bul - 1);
+                len_bul -= 1;
+            }
+        } else {
+            if (sfSprite_getPosition(en.sprite).x > 1920) {
+                tow->bullet = free_element_at(tow->bullet, len_bul - 1);
+                len_bul -= 1;
+            }
             sfSprite_move(en.sprite, tsvf(10, 0));
         }
     }
     sfClock_restart(tow->clock_b.clock);
 }
 
-void create_bullet(tow_g *tow, enemy_s t_bullet)
+void create_bullet_klassico(tow_g *tow, enemy_s t_bullet)
 {
     sfVector2f pos = sfSprite_getPosition(tow->sprite);
-    if (sfSprite_getPosition(tow->sprite).x < 1000)
-        t_bullet.sprite = create_spriteStocky("res/sprites/bullet1.png", pos.x - 10, pos.y + 10, tsvf(1, 1));
-    else
-        t_bullet.sprite = create_spriteStocky("res/sprites/bullet1.png", pos.x - 10, pos.y + 10, tsvf(-1, 1));
+    t_bullet.move_b.x = -10;
+    if (pos.x <= 1000) {
+        t_bullet.sprite = create_spriteStocky("res/sprites/bullet1.png", pos.x - 30, pos.y + 10, tsvf(1, 1));
+    } else {
+        t_bullet.sprite = create_spriteStocky("res/sprites/bullet1.png", pos.x - 30, pos.y + 10, tsvf(-1, 1));
+    }
+    sfVector2f pos_tow = sfSprite_getPosition(tow->sprite);
+    pos_tow.x = pos_tow.x - 30;
+    pos_tow.y = pos_tow.y + 10;
+    float i = (pos_tow.x - tow->target.x) / -10;
+    float y = (pos_tow.y - tow->target.y);
+    float r = y / i;
+    t_bullet.move_b.y = r;
     tow->bullet = add_enemy(tow->bullet, t_bullet, 0);
 }
 
-void anim_klassico(tow_g *tow)
+void create_bullet_avocado(tow_g *tow, enemy_s t_bullet)
+{
+    sfVector2f pos = sfSprite_getPosition(tow->sprite);
+    if (sfSprite_getPosition(tow->sprite).x < 1000)
+        t_bullet.sprite = create_spriteStocky("res/sprites/avocado.png", pos.x - 10, pos.y + 5, tsvf(0.7, 0.7));
+    else
+        t_bullet.sprite = create_spriteStocky("res/sprites/avocado.png", pos.x - 10, pos.y + 5, tsvf(-0.7, 0.7));
+    tow->bullet = add_enemy(tow->bullet, t_bullet, 0);
+}
+
+void create_bullet_hunter(tow_g *tow, enemy_s t_bullet)
+{
+    sfVector2f pos = sfSprite_getPosition(tow->sprite);
+    if (sfSprite_getPosition(tow->sprite).x < 1000)
+        t_bullet.sprite = create_spriteStocky("res/sprites/hunter.png", pos.x - 10, pos.y + 32, tsvf(1, 1));
+    else
+        t_bullet.sprite = create_spriteStocky("res/sprites/hunter.png", pos.x - 10, pos.y + 32, tsvf(-1, 1));
+    tow->bullet = add_enemy(tow->bullet, t_bullet, 0);
+}
+
+void create_bullet_blaster(tow_g *tow, enemy_s t_bullet)
+{
+    sfVector2f pos = sfSprite_getPosition(tow->sprite);
+    if (sfSprite_getPosition(tow->sprite).x < 1000)
+        t_bullet.sprite = create_spriteStocky("res/sprites/blaster.png", pos.x - 10, pos.y + 17, tsvf(0.7, 0.7));
+    else
+        t_bullet.sprite = create_spriteStocky("res/sprites/blaster.png", pos.x - 10, pos.y + 17, tsvf(-0.7, 0.7));
+    tow->bullet = add_enemy(tow->bullet, t_bullet, 0);
+}
+
+void anim_klassico(tow_g *tow, global_s *all)
 {
     tow->rect.top = 0;
     tow->rect.height = 79;
@@ -43,65 +102,96 @@ void anim_klassico(tow_g *tow)
     tow->clock_b.time = sfClock_getElapsedTime(tow->clock_b.clock);
     tow->clock_b.seconds = tow->clock_b.time.microseconds / 1000000.0;
     if (tow->clock.seconds > 0.05) {
+        if (tow->rect.left == 1132)
+            create_bullet_klassico(tow, t_bullet);
         tow->rect.left = tow->rect.left + 283;
         if (tow->rect.left >= 2547)
             tow->rect.left = 0;
-        if (tow->rect.left == 1132)
-            create_bullet(tow, t_bullet);
+        sfClock_restart(tow->clock.clock);
+    }
+    int len_bul = list_len_2(tow->bullet);
+    if (len_bul >= 1) {
+        if (tow->clock_b.seconds > 0.01) {
+            move_bullet(tow, len_bul, all);
+        }
+    }
+    sfSprite_setTextureRect(tow->sprite, tow->rect);
+}
+
+void anim_avocado(tow_g *tow, global_s *all)
+{
+    tow->rect.top = 0;
+    tow->rect.height = 67;
+    tow->rect.width = 177;
+    enemy_s t_bullet;
+    tow->clock.time = sfClock_getElapsedTime(tow->clock.clock);
+    tow->clock.seconds = tow->clock.time.microseconds / 1000000.0;
+    tow->clock_b.time = sfClock_getElapsedTime(tow->clock_b.clock);
+    tow->clock_b.seconds = tow->clock_b.time.microseconds / 1000000.0;
+    if (tow->clock.seconds > 0.045) {
+        tow->rect.left = tow->rect.left + 177;
+        if (tow->rect.left >= 1053) {
+            tow->rect.left = 0;
+            create_bullet_avocado(tow, t_bullet);
+        }
         sfClock_restart(tow->clock.clock);
     }
     int len_bul = list_len_2(tow->bullet);
     if (len_bul >= 1) {
         if (tow->clock_b.seconds > 0.001)
-            move_bullet(tow, len_bul);
+            move_bullet(tow, len_bul, all);
     }
     sfSprite_setTextureRect(tow->sprite, tow->rect);
 }
 
-void anim_avocado(tow_g *tow)
-{
-    tow->rect.top = 0;
-    tow->rect.height = 67;
-    tow->rect.width = 177;
-    tow->clock.time = sfClock_getElapsedTime(tow->clock.clock);
-    tow->clock.seconds = tow->clock.time.microseconds / 1000000.0;
-    if (tow->clock.seconds > 0.045) {
-        tow->rect.left = tow->rect.left + 177;
-        if (tow->rect.left >= 1053)
-            tow->rect.left = 0;
-        sfClock_restart(tow->clock.clock);
-    }
-    sfSprite_setTextureRect(tow->sprite, tow->rect);
-}
-
-void anim_stazz(tow_g *tow)
+void anim_stazz(tow_g *tow, global_s *all)
 {
     tow->rect.top = 0;
     tow->rect.height = 145;
     tow->rect.width = 290;
+    enemy_s t_bullet;
     tow->clock.time = sfClock_getElapsedTime(tow->clock.clock);
     tow->clock.seconds = tow->clock.time.microseconds / 1000000.0;
+    tow->clock_b.time = sfClock_getElapsedTime(tow->clock_b.clock);
+    tow->clock_b.seconds = tow->clock_b.time.microseconds / 1000000.0;
     if (tow->clock.seconds > 0.045) {
         tow->rect.left = tow->rect.left + 290;
-        if (tow->rect.left >= 2610)
+        if (tow->rect.left >= 2610) {
             tow->rect.left = 0;
+            create_bullet_hunter(tow, t_bullet);
+        }
         sfClock_restart(tow->clock.clock);
+    }
+    int len_bul = list_len_2(tow->bullet);
+    if (len_bul >= 1) {
+        if (tow->clock_b.seconds > 0.001)
+            move_bullet(tow, len_bul, all);
     }
     sfSprite_setTextureRect(tow->sprite, tow->rect);
 }
 
-void anim_blaster(tow_g *tow)
+void anim_blaster(tow_g *tow, global_s *all)
 {
     tow->rect.top = 0;
     tow->rect.height = 99;
     tow->rect.width = 246;
+    enemy_s t_bullet;
     tow->clock.time = sfClock_getElapsedTime(tow->clock.clock);
     tow->clock.seconds = tow->clock.time.microseconds / 1000000.0;
+    tow->clock_b.time = sfClock_getElapsedTime(tow->clock_b.clock);
+    tow->clock_b.seconds = tow->clock_b.time.microseconds / 1000000.0;
     if (tow->clock.seconds > 0.01) {
         tow->rect.left = tow->rect.left + 246;
-        if (tow->rect.left >= 2214)
+        if (tow->rect.left >= 2214) {
             tow->rect.left = 0;
+            create_bullet_blaster(tow, t_bullet);
+        }
         sfClock_restart(tow->clock.clock);
+    }
+    int len_bul = list_len_2(tow->bullet);
+    if (len_bul >= 1) {
+        if (tow->clock_b.seconds > 0.001)
+            move_bullet(tow, len_bul, all);
     }
     sfSprite_setTextureRect(tow->sprite, tow->rect);
 }

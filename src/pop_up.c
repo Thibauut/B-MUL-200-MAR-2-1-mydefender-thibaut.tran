@@ -12,7 +12,6 @@ void restart_pop(pop_up_s* pop)
 {
     pop->size = 0;
     pop->is_pop = True;
-    // sfClock_restart(pop.clock.clock);
 }
 
 pop_up_s pop_up(global_s *all, float size_max, float i, sfSprite *sprite)

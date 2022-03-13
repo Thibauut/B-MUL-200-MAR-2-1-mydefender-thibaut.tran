@@ -8,6 +8,18 @@
 #include "../include/func.h"
 #include "../include/struct.h"
 
+void alpha_key(sfEvent *event, global_s *all)
+{
+    if (event->key.code == sfKeySpace) {
+        all->ask[all->c_ask] = ' ';
+        all->c_ask = all->c_ask + 1;
+    } else if (event->key.code != sfKeyBackspace && event->key.code != sfKeyEnter) {
+        all->ask[all->c_ask] = event->key.code + 65;
+        all->c_ask = all->c_ask + 1;
+        all->ask[all->c_ask + 1] = '\0';
+    }
+}
+
 void alpha(sfEvent *event, global_s *all)
 {
     if (event->type == sfEvtKeyPressed) {
@@ -18,16 +30,8 @@ void alpha(sfEvent *event, global_s *all)
             all->ask[all->c_ask] = '\b';
             all->ask[all->c_ask + 1] = '\0';
         }
-        if (my_strlen(all->ask) < 20) {
-            if (event->key.code == sfKeySpace) {
-                all->ask[all->c_ask] = ' ';
-                all->c_ask = all->c_ask + 1;
-            } else if (event->key.code != sfKeyBackspace && event->key.code != sfKeyEnter) {
-                all->ask[all->c_ask] = event->key.code + 65;
-                all->c_ask = all->c_ask + 1;
-                all->ask[all->c_ask + 1] = '\0';
-            }
-        }
+        if (my_strlen(all->ask) < 20)
+            alpha_key(&*event, all);
     }
 }
 

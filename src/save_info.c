@@ -12,11 +12,9 @@ void save_info(global_s *all)
 {
     FILE *fd = fopen(all->info_p->save, "w");
     char *name = my_strdup2(sfText_getString(all->info_p->name));
-    char *lvl = my_itoa(all->info_p->lvl);
-    char *gold = my_itoa(all->info_p->coins);
-    char *tower = my_itoa(all->info_p->tower);
+    char *lvl = my_itoa(all->info_p->lvl), *gold = my_itoa(all->info_p->coins);
+    char *tower = my_itoa(all->info_p->tower), *base = my_itoa(all->info_p->base);
     char *pl_base = my_itoa(all->info_p->pl_base);
-    char *base = my_itoa(all->info_p->base);
     fwrite("SAVE", sizeof(char), 4, fd);
     fwrite("\nNAME=", sizeof(char), 6, fd);
     fwrite(name, sizeof(char), my_strlen(name), fd);

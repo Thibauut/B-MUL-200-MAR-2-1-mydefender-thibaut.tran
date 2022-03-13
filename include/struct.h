@@ -30,7 +30,21 @@
 #define PV 1013
 #define tsvf transform_vf
 #define p_ms all->pos_mouse
+#define v2f sfVector2f
+#define sffrc sfFloatRect_contains
+#define w sfWhite
+#define i_a my_itoa
 #define csS create_spriteStocky
+#define ctS create_textStocky
+#define sftcff sfTexture_createFromFile
+#define sffr sfFloatRect
+#define sfekp sfEvtKeyPressed
+#define sfggb sfSprite_getGlobalBounds
+#define sfrw sfRenderWindow
+#define sfso sfSprite_setOrigin
+#define sfssp sfSprite_setPosition
+#define sfcget sfClock_getElapsedTime
+#define tms time.microseconds
 
 typedef enum {
     False,
@@ -50,8 +64,13 @@ typedef struct enemy_in_game {
     sfSprite *sprite;
     one_cl clock;
     sfIntRect rect;
+    sfSprite *fx;
+    one_cl clock_fx;
+    sfIntRect rect_fx;
     int type;
     int life;
+    sfFloatRect col;
+    sfVector2f move_b;
 }enemy_s;
 
 typedef struct list_enemy_game {
@@ -67,6 +86,7 @@ typedef struct tower_in_game {
     int type;
     one_cl clock_b;
     list_enemy *bullet;
+    sfVector2f target;
 }tow_g;
 
 typedef struct my_list_tower_game {
@@ -105,6 +125,7 @@ typedef struct my_menu {
     sfSprite *bt_left3;
     sfSprite *bt_right3;
     sfSprite *bg_bt;
+    sfSprite *tutorial;
 }sp_menu;
 
 typedef struct my_level {
@@ -125,6 +146,9 @@ typedef struct my_level {
     sfSprite *bt_weap;
     sfSprite *bg_weap;
     sfText *txt_coins;
+    sfSprite *upgrade;
+    sfSprite *upgrade_bt;
+    sfSprite *coins;
 }sp_level;
 
 typedef struct all_cl {
@@ -160,12 +184,22 @@ typedef struct weapons {
     sfSprite *bt_wp5;
 }sp_weap;
 
+typedef struct pause_s {
+    sfSprite *pause;
+    sfSprite *r_pause;
+    sfSprite *resume;
+    sfSprite *save;
+    sfSprite *exit;
+    sfSprite *save_icon;
+}pause_t;
+
 typedef struct my_game {
     sfSprite *bg;
     sfSprite *clouds;
     sfSprite *brume;
     sfSprite *tree;
     sfSprite *base;
+    sfSprite *update;
     sfSprite *road;
     sfSprite *tower_1;
     sfSprite *tower_2;
@@ -178,13 +212,19 @@ typedef struct my_game {
     sfText *blood_x;
     list_enemy *list_enemy;
     list_enemy *list_enemy2;
+    list_enemy *list_enemy3;
+    list_enemy *list_enemy4;
     list_tow_g *list_tow;
     Bool is_bar;
+    int life_b;
+    sfSprite *life_bs;
+    sfSprite *life_bbs;
     int wc_tower;
     all_cl cl;
     sfSprite *ennemy1;
     int e1;
     sfSprite *load;
+    pause_t pause_menu;
 }sp_game;
 
 typedef struct my_other {
@@ -201,6 +241,7 @@ typedef struct my_other {
 
 
 typedef struct sprites_g {
+    sfSprite *cursor;
     sp_menu menu;
     sp_level level;
     sp_game game;
@@ -233,11 +274,15 @@ typedef struct rect_menu {
     sfFloatRect close;
     sfFloatRect tutorial;
     sfFloatRect option;
+    sfFloatRect p_resume;
+    sfFloatRect p_exit;
+    sfFloatRect p_save;
 } rect;
 
 typedef struct rect_col {
     sfFloatRect e1;
     sfFloatRect e1_1;
+    sfFloatRect e2;
     sfFloatRect bullet1;
 } rect_e;
 
@@ -272,10 +317,17 @@ typedef struct global_struct {
     int is_ask;
     int fps_verif;
     sfVector2i pos_mouse;
+    int verif_b;
+    int verif_b2;
+    int verif_dead;
+    int more;
+    int verif_save;
+    int verif_anim;
 }global_s;
 
 //FUNC LIST
 list_enemy *fill_enemy_2(global_s *all);
+list_enemy *fill_enemy_3(global_s *all);
 list_tow_g *free_tow_at(list_tow_g *list, int pos);
 list_enemy *modif_element2(list_enemy *list, one_cl clock, int e);
 enemy_s get_enemy(list_enemy *list, int pos);
@@ -286,10 +338,23 @@ list_tow_g *create_cell(tow_g tower);
 list_tow_g *add_tower(list_tow_g *list, tow_g tower, int pos);
 list_enemy *add_enemy(list_enemy *list2, enemy_s enemy, int pos);
 list_enemy *free_element_at(list_enemy *list, int pos);
+void destroy_menu(global_s *all);
+void destroy_menu2(global_s *all);
+sfSprite *get_spt_en(list_enemy *list, int pos);
+sfFloatRect rect_e1(global_s *all, sfSprite *spt);
+sfFloatRect rect_e1_rev(global_s *all, sfSprite *spt);
+sfFloatRect rect_e3(global_s *all, sfSprite *spt);
+sfFloatRect rect_e4(global_s *all, sfSprite *spt);
+list_enemy *fill_enemy_4(global_s *all);
+void enemy4(global_s *all);
+int anim_e1(sfSprite *spt, one_cl *cl, int i, global_s *all, enemy_s *en);
+int anim_e1_rev(sfSprite *spt, one_cl *cl, int i, global_s *all, enemy_s *en);
+int anim_e3(sfSprite *spt, one_cl *cl, int i, global_s* all, enemy_s *en);
+int anim_e4(sfSprite *spt, one_cl *cl, int i, global_s* all, enemy_s *en);
 
 // INITIALISATION
 sfRenderWindow *create_window(void);
-sfText* create_textStocky(char const *str, int size, sfColor color, float x, float y);
+sfText* create_textStocky(char *str, int size, sfColor color, float x, float y);
 sfSprite* create_spriteStocky(const char* filename, int x, int y, sfVector2f size);
 void create_all(global_s *all, char **av);
 void my_init_menu(global_s *all);
@@ -303,6 +368,27 @@ void init_weapons(global_s *all);
 list_enemy *create_enemy(enemy_s enemy);
 list_enemy *add_enemy(list_enemy *list2, enemy_s enemy, int pos);
 list_enemy *fill_enemy(global_s *all);
+sp_menu create_spt_menu(void);
+sp_menu create_sprites(void);
+player *take_info(char **av, global_s *all);
+void find_name(global_s *all);
+void print_light(global_s *all);
+sfSprite *choose_icon_level(sfSprite *sprite, int player_lvl, int states);
+void game_level(global_s *all, int lvl);
+void check_button_weap(global_s *all);
+void choose_icons_level(global_s *all);
+void my_draw_levels(global_s *all);
+void check_mouse_icone(global_s *all);
+void can_buy_weap(global_s *all, int wep);
+void draw_menu_weap(global_s *all);
+void enemy2(global_s *all);
+sfIntRect create_rect(int top, int left, int width, int height);
+int collision_e1(global_s *all, list_enemy *list, int r);
+int collision_e1_rev(global_s *all, list_enemy *list, int r);
+int collision_e3(global_s *all, list_enemy *list, int i);
+int collision_e4(global_s *all, list_enemy *list, int i);
+int dmg(int type, int base);
+sfText *pv(float x, float y, list_enemy *list);
 
 // UTILITAIRES
 list_tow_g *modif_element(list_tow_g *list, int e, sfVector2f pos, sfSprite *spt, int type);
@@ -339,13 +425,27 @@ int more_bt_close(global_s *all);
 void draw_more(global_s *all);
 int play_bt(global_s *all);
 void print_weap(global_s *all);
+void check_wich_base(global_s *all);
+void reset_texture_base(global_s *all);
+int more_event(global_s *all);
 
 // GAME
-void anim_klassico(tow_g *tow);
-void anim_avocado(tow_g *tow);
-void anim_stazz(tow_g *tow);
-void anim_blaster(tow_g *tow);
+void anim_klassico(tow_g *tow, global_s *all);
+void anim_avocado(tow_g *tow, global_s *all);
+void anim_stazz(tow_g *tow, global_s *all);
+void anim_blaster(tow_g *tow, global_s *all);
 void my_game(global_s *all);
+void create_sprites_game(global_s *all);
+list_tow_g *fill_list_tow(global_s *all);
+void print_game(global_s *all);
+void refresh_clocks(global_s *all);
+void is_draw_wep(sfSprite *spt, int num, global_s *all);
+void print_weapons(global_s *all);
+void enemy(global_s *all);
+void move_clouds(global_s *all);
+void print_weapons(global_s *all);
+void check_place_weap(global_s *all);
+int pause_game(global_s *all);
 
 // NEW USER
 void ask_name(global_s *all);
@@ -364,3 +464,7 @@ void check_events(global_s *all);
 void draw_menu_parallax(global_s *all);
 void anim_parallax(global_s *all);
 void anim_button(global_s *all);
+void enemy3(global_s *all);
+
+//FREE
+void free_game(global_s *all);

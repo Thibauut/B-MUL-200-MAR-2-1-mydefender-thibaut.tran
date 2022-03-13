@@ -34,7 +34,6 @@ void draw_sprite_menu(global_s *all)
     anim_parallax(all);
     anim_button(all);
     sfRenderWindow_display(all->wind);
-
 }
 
 void my_menu(global_s *all)

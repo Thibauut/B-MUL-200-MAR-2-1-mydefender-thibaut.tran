@@ -12,28 +12,28 @@
 void init_rect(global_s *all)
 {
     all->rect = malloc(sizeof(rect));
-    all->rect->more = sfSprite_getGlobalBounds(all->sprite.menu.bt_1);
-    all->rect->play = sfSprite_getGlobalBounds(all->sprite.menu.bt_2);
-    all->rect->close = sfSprite_getGlobalBounds(all->sprite.menu.bt_close);
-    all->rect->tutorial = sfSprite_getGlobalBounds(all->sprite.menu.bt_tutorial);
-    all->rect->option = sfSprite_getGlobalBounds(all->sprite.menu.bt_option);
+    all->rect->more = sfggb(all->sprite.menu.bt_1);
+    all->rect->play = sfggb(all->sprite.menu.bt_2);
+    all->rect->close = sfggb(all->sprite.menu.bt_close);
+    all->rect->tutorial = sfggb(all->sprite.menu.bt_tutorial);
+    all->rect->option = sfggb(all->sprite.menu.bt_option);
 }
 
 int play_bt(global_s *all)
 {
-    sfVector2f size = {1, 1}, sizeup = {1.03, 1.03}, move = {806, 598}, pos = {810, 600};
-    if (sfFloatRect_contains(&all->rect->play, all->pos_mouse.x, all->pos_mouse.y)) {
+    v2f size = {1, 1}, sizeup = {1.03, 1.03}, move = {806, 598};
+    v2f pos = {810, 600};
+    if (sffrc(&all->rect->play, all->pos_mouse.x, all->pos_mouse.y)) {
         sfSprite_setPosition(all->sprite.menu.bt_2, move);
         sfSprite_setScale(all->sprite.menu.bt_2, sizeup);
         if (all->event->type == sfEvtMouseButtonPressed) {
             all->STATUS = MAP;
-            sfFloatRect rect = sfSprite_getGlobalBounds(all->sprite.menu.bt_close);
+            sfFloatRect rect = sfggb(all->sprite.menu.bt_close);
             rect.height = rect.height / 2;
             rect.width = rect.width / 2;
-            sfSprite_setOrigin(all->sprite.menu.bt_close, tsvf(rect.width, rect.height));
+            sfso(all->sprite.menu.bt_close, tsvf(rect.width, rect.height));
             sfSprite_setPosition(all->sprite.menu.bt_close, tsvf(1830, 70));
-            ask_name(all);
-            choose_base(all);
+            ask_name(all), choose_base(all);
             my_init_level(all);
         }
     } else {

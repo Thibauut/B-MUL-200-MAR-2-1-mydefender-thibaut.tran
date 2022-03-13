@@ -67,6 +67,14 @@ int music_bt(global_s *all)
     return (3);
 }
 
+void event_close_opt(global_s *all)
+{
+    if (all->event->type == sfEvtClosed) {
+        sfRenderWindow_close(all->wind);
+        all->STATUS = FINISH;
+    }
+}
+
 void more_option(global_s *all)
 {
     all->event = malloc(sizeof(sfEvent));
@@ -76,10 +84,7 @@ void more_option(global_s *all)
     while (sfRenderWindow_isOpen(all->wind)) {
         while (sfRenderWindow_pollEvent(all->wind, all->event)) {
             all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);
-            if (all->event->type == sfEvtClosed) {
-                sfRenderWindow_close(all->wind);
-                all->STATUS = FINISH;
-            }
+            event_close_opt(all);
             if (more_bt_close(all) == 1)
                 return;
             y = verif_button(all, i);
@@ -89,8 +94,7 @@ void more_option(global_s *all)
             c = music_bt(all);
             v = music_checker(c, v);
         }
-        draw_more_option(all);
-        draw_fps(all, i[j], k[x], k[v]);
+        draw_more_option(all), draw_fps(all, i[j], k[x], k[v]);
         sfRenderWindow_display(all->wind);
     }
 }
