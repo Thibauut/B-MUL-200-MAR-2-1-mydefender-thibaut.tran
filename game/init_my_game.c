@@ -59,7 +59,7 @@ int dmg(int type, int base)
             break;
     }
     if (base == ATTACK)
-        dmg = dmg * 1.1;
+        dmg = dmg * 1.3;
     // printf("dmg: %i\n", dmg);
     return (dmg);
 }
@@ -79,9 +79,10 @@ void enemy2(global_s *all)
     list_enemy *list_rev = all->sprite.game.list_enemy2;
     sfVector2f pos_txt;
     enemy_s enemy;
-    int len2 = list_len_2(list_rev) - 1;
+    int len2 = list_len_2(list_rev);
     for (int i = 0; i != len2; list_rev = list_rev->next, i++) {
          if (anim_e1_rev(list_rev->enemy.sprite, &list_rev->enemy.clock, 130, all, &list_rev->enemy) == 1) {
+            all->sprite.game.nb_enemy -= 1;
             all->sprite.game.blood += 30;
             all->sprite.game.list_enemy2 = free_element_at(all->sprite.game.list_enemy2, i);
             continue;
@@ -106,12 +107,13 @@ int enemy3_anim(global_s *all, list_enemy *list)
 void enemy3(global_s *all)
 {
     list_enemy *list = all->sprite.game.list_enemy3;
-    int len = list_len_2(list) - 1;
+    int len = list_len_2(list);
     sfVector2f pos_txt;
     enemy_s enemy;
     for (int i = 0; i != len; list = list->next, i++) {
         if (enemy3_anim(all, list) == 1) {
             all->sprite.game.blood += 30;
+            all->sprite.game.nb_enemy -= 1;
             all->sprite.game.list_enemy3 = free_element_at(all->sprite.game.list_enemy3, i);
             continue;
         }
@@ -129,11 +131,12 @@ void enemy3(global_s *all)
 void enemy4(global_s *all)
 {
     list_enemy *list = all->sprite.game.list_enemy4;
-    int len = list_len_2(list) - 1;
+    int len = list_len_2(list);
     sfVector2f pos_txt;
     enemy_s enemy;
     for (int i = 0; i != len; list = list->next, i++) {
         if (anim_e4(list->enemy.sprite, &list->enemy.clock, 343, all, &list->enemy) == 1) {
+            all->sprite.game.nb_enemy -= 1;
             all->sprite.game.blood += 30;
             all->sprite.game.list_enemy4 = free_element_at(all->sprite.game.list_enemy4, i);
             continue;
@@ -150,7 +153,7 @@ void enemy4(global_s *all)
 void enemy(global_s *all)
 {
     list_enemy *list = all->sprite.game.list_enemy;
-    int len = list_len_2(list) - 1;
+    int len = list_len_2(list);
     sfVector2f pos_txt;
     char *txt_string;
     sfFloatRect r_prev, r_now;
@@ -158,6 +161,7 @@ void enemy(global_s *all)
     enemy_s enemy;
     for (int i = 0; i != len; list = list->next, i++) {
         if (anim_e1(list->enemy.sprite, &list->enemy.clock, 130, all, &list->enemy) == 1) {
+            all->sprite.game.nb_enemy -= 1;
             all->sprite.game.list_enemy = free_element_at(all->sprite.game.list_enemy, i);
             all->sprite.game.blood += 30;
             continue;

@@ -87,6 +87,7 @@ typedef struct tower_in_game {
     one_cl clock_b;
     list_enemy *bullet;
     sfVector2f target;
+    int verif_shoot;
 }tow_g;
 
 typedef struct my_list_tower_game {
@@ -223,6 +224,12 @@ typedef struct my_game {
     all_cl cl;
     sfSprite *ennemy1;
     int e1;
+    int nb_enemy;
+    int nb_mecha;
+    int nb_jet;
+    int nb_car;
+    sfSprite *logo_enemy;
+    sfText *nb_enemy_t;
     sfSprite *load;
     pause_t pause_menu;
 }sp_game;
@@ -247,6 +254,7 @@ typedef struct sprites_g {
     sp_game game;
     sp_other other;
     sp_weap weapons;
+    int life_tmp;
 }sprites_s;
 
 typedef struct info_player {
@@ -292,6 +300,13 @@ typedef struct verif_struct {
     sfVector2f pos_1;
 }verif_s;
 
+typedef struct lose_game {
+    sfSprite *bg;
+    sfSprite *restart_bt;
+    sfSprite *exit_bt;
+    sfSprite *light;
+}lose;
+
 typedef struct global_struct {
     sfRenderWindow *wind;
     int STATUS;
@@ -310,6 +325,8 @@ typedef struct global_struct {
     pop_up_s pop6;
     pop_up_s pop7;
     pop_up_s pop8;
+    pop_up_s pop9;
+    pop_up_s pop10;
     int level_played;
     char *ask;
     char *ask_1;
@@ -317,17 +334,21 @@ typedef struct global_struct {
     int is_ask;
     int fps_verif;
     sfVector2i pos_mouse;
-    int verif_b;
-    int verif_b2;
     int verif_dead;
     int more;
     int verif_save;
     int verif_anim;
+    int verif_l;
+    int verif_r;
+    float life;
+    sfIntRect rect_life;
+    lose lose;
 }global_s;
 
 //FUNC LIST
 list_enemy *fill_enemy_2(global_s *all);
 list_enemy *fill_enemy_3(global_s *all);
+void refresh_life_base(global_s *all, int dmg);
 list_tow_g *free_tow_at(list_tow_g *list, int pos);
 list_enemy *modif_element2(list_enemy *list, one_cl clock, int e);
 enemy_s get_enemy(list_enemy *list, int pos);

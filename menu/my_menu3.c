@@ -36,10 +36,23 @@ void check_button_weap(global_s *all)
     }
 }
 
+void choose_num_enemy(global_s *all)
+{
+    if (all->level_played <= 3) {
+        all->sprite.game.nb_car = 1;
+        all->sprite.game.nb_jet = 1;
+    } else {
+        all->sprite.game.nb_car = 5;
+        all->sprite.game.nb_jet = 5;
+    }
+    all->sprite.game.nb_mecha = 10;
+}
+
 void game_level(global_s *all, int lvl)
 {
     if (all->event->type == sfEvtMouseButtonPressed) {
         all->STATUS = GAME, all->level_played = lvl;
+        choose_num_enemy(all);
         my_init_game(all);
     }
 }

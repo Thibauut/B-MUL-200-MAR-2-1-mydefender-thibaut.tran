@@ -49,14 +49,14 @@ list_enemy *add_enemy(list_enemy *list2, enemy_s enemy, int pos)
 int list_len(list_tow_g *list)
 {
     int i = 0;
-    for(; list != NULL; list = list->next, i += 1);
+    for (; list != NULL; list = list->next, i += 1);
     return (i);
 }
 
 int list_len_2(list_enemy *list)
 {
     int i = 0;
-    for(; list != NULL; list = list->next, i += 1);
+    for (; list != NULL; list = list->next, i += 1);
     return (i);
 }
 

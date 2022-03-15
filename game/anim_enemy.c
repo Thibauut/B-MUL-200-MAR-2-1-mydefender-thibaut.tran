@@ -8,6 +8,73 @@
 #include "../include/func.h"
 #include "../include/struct.h"
 
+void restart_bt(global_s *all)
+{
+    sfFloatRect rect = sfggb(all->lose.restart_bt);
+    v2f size = {1.5, 1.5}, sizeup = {1.53, 1.53};
+    if (sfFloatRect_contains(&rect, all->pos_mouse.x, all->pos_mouse.y)) {
+        // sfSprite_setPosition(all->lose.restart_bt, move);
+        sfSprite_setScale(all->lose.restart_bt, sizeup);
+        if (all->event->type == sfEvtMouseButtonPressed)
+           my_init_game(all);
+    } else {
+        sfSprite_setScale(all->lose.restart_bt, size);
+        // sfSprite_setPosition(all->lose.restart_bt, pos);
+    }
+}
+
+void exit_bt(global_s *all)
+{
+    sfFloatRect rect = sfggb(all->lose.exit_bt);
+    v2f size = {1.5, 1.5}, sizeup = {1.53, 1.53};
+    if (sfFloatRect_contains(&rect, all->pos_mouse.x, all->pos_mouse.y)) {
+        // sfSprite_setPosition(all->lose.exit_bt, move);
+        sfSprite_setScale(all->lose.exit_bt, sizeup);
+        if (all->event->type == sfEvtMouseButtonPressed)
+            all->STATUS = MAP;
+    } else {
+        sfSprite_setScale(all->lose.exit_bt, size);
+        // sfSprite_setPosition(all->lose.exit_bt, pos);
+    }
+}
+
+
+void lose_game(global_s *all)
+{
+    all->event = malloc(sizeof(sfEvent));
+    all->pop9 = pop_up(all, 1.5, 0.1, all->lose.exit_bt);
+    all->pop10 = pop_up(all, 1.5, 0.1, all->lose.restart_bt);
+    while (all->STATUS == GAME) {
+        sfSprite_rotate(all->lose.light, 0.2);
+        sfRenderWindow_drawSprite(all->wind, all->lose.light, NULL);
+        sfRenderWindow_drawSprite(all->wind, all->lose.bg, NULL);
+        draw_pop_up(all->lose.restart_bt, all, &all->pop10);
+        draw_pop_up(all->lose.exit_bt, all, &all->pop9);
+        sfRenderWindow_display(all->wind);
+        all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);
+        while (sfRenderWindow_pollEvent(all->wind, all->event)) {
+            if (all->event->type == sfEvtClosed) {
+                sfRenderWindow_close(all->wind);
+                all->STATUS = FINISH;
+            }
+            restart_bt(all);
+            exit_bt(all);
+        }
+    }
+    return;
+}
+
+void refresh_life_base(global_s *all, int dmg)
+{
+    all->sprite.game.life_b -= dmg;
+    all->life = (all->sprite.life_tmp / 183) + 1;
+    all->life = (int) all->sprite.game.life_b / all->life;
+    all->rect_life = create_rect(0, 0, all->life, 12);
+    sfSprite_setTextureRect(all->sprite.game.life_bs, all->rect_life);
+    if (all->sprite.game.life_b <= 0)
+        lose_game(all);
+}
+
 int anim_e1(sfSprite *spt, one_cl *cl, int i, global_s *all, enemy_s *en)
 {
     cl->time = sfClock_getElapsedTime(cl->clock);
@@ -37,6 +104,8 @@ int anim_e1(sfSprite *spt, one_cl *cl, int i, global_s *all, enemy_s *en)
             return (1);
         if (cl->pos >= 2860 && rect.top == 0)
             cl->pos = 0;
+        if (rect.top == 0 && cl->pos == 1690)
+            refresh_life_base(all, 100);
         sfClock_restart(cl->clock);
     }
     sfSprite_setTextureRect(spt, rect);
@@ -72,6 +141,8 @@ int anim_e1_rev(sfSprite *spt, one_cl *cl, int i, global_s *all, enemy_s *en)
             return (1);
         if (cl->pos >= 2860 && rect.top == 0)
             cl->pos = 0;
+        if (rect.top == 0 && cl->pos == 1690)
+            refresh_life_base(all, 100);
         sfClock_restart(cl->clock);
     }
     sfSprite_setTextureRect(spt, rect);
@@ -128,7 +199,7 @@ int anim_e4(sfSprite *spt, one_cl *cl, int i, global_s* all, enemy_s *en)
         rect.top = 436;
         is_rect = sfTrue;
     }
-    if (cl->seconds > 0.02) {
+    if (cl->seconds > 0.03) {
         if (is_rect != sfTrue) {
             sfSprite_move(spt, tsvf(2, 0));
             en->col = rect_e4(all, en->sprite);
@@ -137,9 +208,13 @@ int anim_e4(sfSprite *spt, one_cl *cl, int i, global_s* all, enemy_s *en)
         if (cl->pos >= 6174 && is_rect != sfTrue)
             cl->pos = 0;
         if (cl->pos >= 6174 && rect.top == 436)
+            rect.top = 654;
+        if (cl->pos >= 6174 && rect.top == 654)
             return (1);
-        if (cl->pos >= 5831 && rect.top == 218)
+        if (cl->pos >= 5831 && rect.top == 218) {
+            refresh_life_base(all, 150);
             cl->pos = 0;
+        }
         sfClock_restart(cl->clock);
     }
     sfSprite_setTextureRect(spt, rect);

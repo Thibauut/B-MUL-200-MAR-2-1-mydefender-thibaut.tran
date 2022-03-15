@@ -54,5 +54,12 @@ void print_game(global_s *all)
     enemy(all);
     enemy2(all);
     enemy3(all);
+    sfRenderWindow_drawSprite(all->wind, all->sprite.game.logo_enemy, NULL);
+    char *str = my_itoa(all->sprite.game.nb_enemy);
+    str = my_strcat(str, " / ");
+    int nb = all->sprite.game.nb_car + all->sprite.game.nb_mecha + all->sprite.game.nb_jet;
+    str = my_strcat(str, my_itoa(nb));
+    sfText_setString(all->sprite.game.nb_enemy_t, str);
+    sfRenderWindow_drawText(all->wind, all->sprite.game.nb_enemy_t, NULL);
     sfRenderWindow_display(all->wind);
 }

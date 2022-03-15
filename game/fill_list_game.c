@@ -14,22 +14,25 @@ list_tow_g *fill_list_tow(global_s *all)
     tow_g tow;
     tow.type = 0;
     int bin_x[4];
-    bin_x[0] = 610;
-    bin_x[1] = 1225;
-    bin_x[2] = 1090;
-    bin_x[3] = 740;
+    bin_x[0] = 650;
+    bin_x[1] = 1265;
+    bin_x[2] = 1130;
+    bin_x[3] = 780;
     int bin_y[4];
-    bin_y[0] = 750;
-    bin_y[1] = 750;
-    bin_y[2] = 495;
-    bin_y[3] = 495;
+    bin_y[0] = 790;
+    bin_y[1] = 790;
+    bin_y[2] = 535;
+    bin_y[3] = 535;
     int place = 0;
+    tow.verif_shoot = 0;
     for (; place != all->info_p->pl_base; place += 1) {
         tow.clock = create_one_clock();
         tow.clock_b = create_one_clock();
         tow.rect.left = 0;
         tow.pos = tsvf(bin_x[place], bin_y[place]);
         tow.sprite = create_spriteStocky("res/game/add_weap.png", tow.pos.x, tow.pos.y, tsvf(1.2, 1.2));
+        tow.rect = sfSprite_getTextureRect(tow.sprite);
+        sfSprite_setOrigin(tow.sprite, tsvf(tow.rect.width / 2 , tow.rect.height / 2));
         tow.type = 0;
         tow.bullet = NULL;
         list = add_tower(list, tow, 0);
@@ -44,7 +47,8 @@ list_enemy *fill_enemy(global_s *all)
     enemy.life = 1000;
     int count = 10;
     enemy.type = 0;
-    for (int i = 0; i != 3; i++) {
+    printf("mecha: %i ", all->sprite.game.nb_mecha - 1);
+    for (int i = 0; i != all->sprite.game.nb_mecha ; i++) {
         enemy.clock = create_one_clock();
         enemy.sprite = create_spriteStocky("res/sprites/e1_spt_2.png", count, 780, tsvf(1.9, 1.9));
         sfSprite_setTextureRect(enemy.sprite, create_rect(100, 130, 0, 0));
@@ -62,7 +66,8 @@ list_enemy *fill_enemy_2(global_s *all)
     enemy.life = 1000;
     int count = 1920;
     enemy.type = 0;
-    for (int i = 0; i != 10; i++) {
+    printf("mecha_rev: %i ", all->sprite.game.nb_mecha - 1);
+    for (int i = 0; i != all->sprite.game.nb_mecha; i++) {
         enemy.clock = create_one_clock();
         enemy.sprite = create_spriteStocky("res/sprites/e1_spt_2.png", count, 780, tsvf(-1.9, 1.9));
         sfSprite_setTextureRect(enemy.sprite, create_rect(100, 130, 0, 0));
@@ -80,7 +85,8 @@ list_enemy *fill_enemy_3(global_s *all)
     enemy.life = 300;
     int count = 0;
     enemy.type = 0;
-    for (int i = 0; i != 5; i++) {
+    printf("jet: %i ", all->sprite.game.nb_jet - 1);
+    for (int i = 0; i != all->sprite.game.nb_jet; i++) {
         enemy.clock = create_one_clock();
         enemy.clock_fx = create_one_clock();
         enemy.sprite = create_spriteStocky("res/sprites/jet_spt.png", count, 520, tsvf(0.8, 0.8));
@@ -101,7 +107,8 @@ list_enemy *fill_enemy_4(global_s *all)
     enemy.life = 1000;
     int count = 0;
     enemy.type = 0;
-    for (int i = 0; i != 2; i++) {
+    printf("gova: %i ", all->sprite.game.nb_car - 1);
+    for (int i = 0; i != all->sprite.game.nb_car; i++) {
         enemy.clock = create_one_clock();
         enemy.sprite = create_spriteStocky("res/sprites/gova2_spt.png", count, 768, tsvf(1, 1));
         sfSprite_setTextureRect(enemy.sprite, create_rect(0, 0, 218, 343));

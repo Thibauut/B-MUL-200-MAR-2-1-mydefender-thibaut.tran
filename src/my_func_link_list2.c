@@ -21,6 +21,7 @@ list_tow_g *create_cell(tow_g tower)
     cell->tower.bullet = tower.bullet;
     cell->tower.clock_b = tower.clock_b;
     cell->tower.target = tower.target;
+    cell->tower.verif_shoot = tower.verif_shoot;
     cell->next = NULL;
     return (cell);
 }

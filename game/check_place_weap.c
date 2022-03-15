@@ -14,6 +14,9 @@ void check_place_weap4(global_s *all, char *str)
     if (sfFloatRect_contains(&rect_4, all->pos_mouse.x, all->pos_mouse.y) && str[3] == '1') {
         int len = all->sprite.game.wc_tower;
         tow_g tow = get_element4(all->sprite.game.list_tow, len);
+        sfVector2f pos = sfSprite_getPosition(tow.sprite);
+        pos.y = pos.y - 20;
+        sfSprite_setPosition(tow.sprite, pos);
         if (all->sprite.game.blood < 900 || tow.type == 4)
             return;
         tow.type = 4;
@@ -32,6 +35,9 @@ void check_place_weap3(global_s *all, char *str)
     if (sfFloatRect_contains(&rect_3, all->pos_mouse.x, all->pos_mouse.y) && str[2] == '1') {
         int len = all->sprite.game.wc_tower;
         tow_g tow = get_element4(all->sprite.game.list_tow, len);
+        sfVector2f pos = sfSprite_getPosition(tow.sprite);
+        pos.y = pos.y - 20;
+        sfSprite_setPosition(tow.sprite, pos);
         if (all->sprite.game.blood < 600 || tow.type == 3)
             return;
         tow.type = 3;
@@ -51,6 +57,9 @@ void check_place_weap2(global_s *all, char *str)
     if (sfFloatRect_contains(&rect_2, all->pos_mouse.x, all->pos_mouse.y) && str[1] == '1') {
         int len = all->sprite.game.wc_tower;
         tow_g tow = get_element4(all->sprite.game.list_tow, len);
+        sfVector2f pos = sfSprite_getPosition(tow.sprite);
+        pos.y = pos.y - 20;
+        sfSprite_setPosition(tow.sprite, pos);
         if (all->sprite.game.blood < 300 || tow.type == 2)
             return;
         tow.type = 2;
@@ -87,6 +96,9 @@ void check_place_weap(global_s *all)
     if (sfFloatRect_contains(&rect_1, all->pos_mouse.x, all->pos_mouse.y)) {
         int len = all->sprite.game.wc_tower;
         tow_g tow = get_element4(all->sprite.game.list_tow, len);
+        sfVector2f pos = sfSprite_getPosition(tow.sprite);
+        pos.y = pos.y - 40;
+        sfSprite_setPosition(tow.sprite, pos);
         if (all->sprite.game.blood < 100 || tow.type == 1)
             return;
         tow.type = 1;
