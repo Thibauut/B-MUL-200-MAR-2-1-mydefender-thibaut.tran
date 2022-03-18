@@ -55,8 +55,9 @@ void draw_more(global_s *all)
 
 int more_bt_close(global_s *all)
 {
-    sfVector2f size = {1, 1}, sizeup = {1.03, 1.03}, move = {1798, 47}, pos = {1800, 50};
-    if (sfFloatRect_contains(&all->rect->close, all->pos_mouse.x, all->pos_mouse.y)) {
+    sfVector2f size = {1, 1}, sizeup = {1.03, 1.03};
+    sfVector2f move = {1798, 47}, pos = {1800, 50};
+    if (sffrc(&all->rect->close, all->pos_mouse.x, all->pos_mouse.y)) {
         sfSprite_setPosition(all->sprite.menu.bt_close, move);
         sfSprite_setScale(all->sprite.menu.bt_close, sizeup);
         if (all->event->type == sfEvtMouseButtonPressed)

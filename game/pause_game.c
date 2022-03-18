@@ -10,20 +10,16 @@
 
 void pause_draw(global_s *all)
 {
-    sfRenderWindow_drawSprite(all->wind, all->sprite.game.pause_menu.pause, NULL);
-    sfRenderWindow_drawSprite(all->wind, all->sprite.game.pause_menu.r_pause, NULL);
-    sfRenderWindow_drawSprite(all->wind, all->sprite.game.pause_menu.resume, NULL);
-    sfRenderWindow_drawSprite(all->wind, all->sprite.game.pause_menu.save, NULL);
-    sfRenderWindow_drawSprite(all->wind, all->sprite.game.pause_menu.exit, NULL);
-    int verif = 0;
+    sfrwds(all->wind, all->sprite.game.pause_menu.pause, NULL);
+    sfrwds(all->wind, all->sprite.game.pause_menu.r_pause, NULL);
+    sfrwds(all->wind, all->sprite.game.pause_menu.resume, NULL);
+    sfrwds(all->wind, all->sprite.game.pause_menu.save, NULL);
+    sfrwds(all->wind, all->sprite.game.pause_menu.exit, NULL);
     if (all->verif_save == 1) {
-        verif = 1;
-        sfRenderWindow_drawSprite(all->wind, all->sprite.game.pause_menu.save_icon, NULL);
+        sfrwds(all->wind, all->sprite.game.pause_menu.save_icon, NULL);
         all->verif_save = 0;
     }
     sfRenderWindow_display(all->wind);
-    if (verif == 1)
-        usleep(1000000);
 }
 
 void init_pause_rect(global_s *all)
@@ -36,8 +32,9 @@ void init_pause_rect(global_s *all)
 
 int pause_resume(global_s *all)
 {
-    v2f size = {1.5, 1.5}, sizeup = {1.53, 1.53}, move = {828, 497}, pos = {830, 500};
-    if (sfFloatRect_contains(&all->rect->p_resume, all->pos_mouse.x, all->pos_mouse.y)) {
+    v2f size = {1.5, 1.5}, sizeup = {1.53, 1.53}, move = {828, 497};
+    v2f pos = {830, 500};
+    if (sffrc(&all->rect->p_resume, all->pos_mouse.x, all->pos_mouse.y)) {
         sfSprite_setPosition(all->sprite.game.pause_menu.resume, move);
         sfSprite_setScale(all->sprite.game.pause_menu.resume, sizeup);
         if (all->event->type == sfEvtMouseButtonPressed)
@@ -51,8 +48,9 @@ int pause_resume(global_s *all)
 
 int pause_exit(global_s *all)
 {
-    v2f size = {1.5, 1.5}, sizeup = {1.53, 1.53}, move = {828, 797}, pos = {830, 800};
-    if (sfFloatRect_contains(&all->rect->p_exit, all->pos_mouse.x, all->pos_mouse.y)) {
+    v2f size = {1.5, 1.5}, sizeup = {1.53, 1.53}, move = {828, 797};
+    v2f pos = {830, 800};
+    if (sffrc(&all->rect->p_exit, all->pos_mouse.x, all->pos_mouse.y)) {
         sfSprite_setPosition(all->sprite.game.pause_menu.exit, move);
         sfSprite_setScale(all->sprite.game.pause_menu.exit, sizeup);
         if (all->event->type == sfEvtMouseButtonPressed)
@@ -66,8 +64,9 @@ int pause_exit(global_s *all)
 
 int pause_save(global_s *all)
 {
-    v2f size = {1.5, 1.5}, sizeup = {1.53, 1.53}, move = {828, 647}, pos = {830, 650};
-    if (sfFloatRect_contains(&all->rect->p_save, all->pos_mouse.x, all->pos_mouse.y)) {
+    v2f size = {1.5, 1.5}, sizeup = {1.53, 1.53}, move = {828, 647};
+    v2f pos = {830, 650};
+    if (sffrc(&all->rect->p_save, all->pos_mouse.x, all->pos_mouse.y)) {
         sfSprite_setPosition(all->sprite.game.pause_menu.save, move);
         sfSprite_setScale(all->sprite.game.pause_menu.save, sizeup);
         if (all->event->type == sfEvtMouseButtonPressed) {
@@ -84,7 +83,6 @@ int pause_save(global_s *all)
 int pause_game(global_s *all)
 {
     all->event = malloc(sizeof(sfEvent));
-    sfRenderWindow_clear(all->wind, sfBlack);
     init_pause_rect(all);
     all->verif_save = 0;
     while (sfRenderWindow_isOpen(all->wind)) {
@@ -95,7 +93,8 @@ int pause_game(global_s *all)
                 sfRenderWindow_close(all->wind);
                 all->STATUS = FINISH;
             }
-            if (all->event->type == sfEvtKeyPressed && all->event->key.code == sfKeyEscape)
+            if (all->event->type == sfEvtKeyPressed
+            && all->event->key.code == sfKeyEscape)
                 return (0);
             if (pause_resume(all) == 1)
                 return (0);

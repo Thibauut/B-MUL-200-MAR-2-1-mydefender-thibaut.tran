@@ -35,10 +35,10 @@ all_cl create_clock(void)
     return (cl);
 }
 
-sfSprite* create_spriteStocky(const char* filename, int x, int y, sfVector2f size)
+sfSprite *create_spriteStocky(const char *filename, int x, int y, v2f size)
 {
-    sfSprite* sprite = sfSprite_create();
-    sfTexture* texture = sftcff(filename, NULL);
+    sfSprite *sprite = sfSprite_create();
+    sfTexture *texture = sftcff(filename, NULL);
     sfSprite_setTexture(sprite, texture, sfTrue);
     sfVector2f scale = {size.x, size.y};
     sfSprite_setScale(sprite, scale);

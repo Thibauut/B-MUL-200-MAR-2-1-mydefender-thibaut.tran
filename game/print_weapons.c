@@ -26,7 +26,7 @@ tow_g choose_texture4(global_s *all, tow_g tow, sfTexture *texture, v2f scale)
     return (tow);
 }
 
-tow_g choose_texture3(global_s *all, tow_g tow, sfTexture *texture, v2f scale)
+tow_g choose_texture3(global_s *all, tow_g tow, sft *texture, v2f scale)
 {
     if (tow.type == 3) {
         if (sfSprite_getPosition(tow.sprite).x > 1000)
@@ -34,7 +34,7 @@ tow_g choose_texture3(global_s *all, tow_g tow, sfTexture *texture, v2f scale)
         texture = sfTexture_createFromFile("res/sprites/wp3_spt.png", NULL);
         sfIntRect rect_1;
         sfSprite_setScale(tow.sprite, scale);
-        sfssp(tow.sprite, tsvf(tow.pos.x - 60 + all->more, tow.pos.y));
+        sfssp(tow.sprite, tsvf(tow.pos.x - 100 + all->more, tow.pos.y + 47));
         sfSprite_setTexture(tow.sprite, texture, sfFalse);
         anim_stazz(&tow, all);
     }
@@ -52,7 +52,7 @@ tow_g choose_texture3(global_s *all, tow_g tow, sfTexture *texture, v2f scale)
     return (choose_texture4(all, tow, texture, scale));
 }
 
-tow_g choose_texture2(global_s *all, tow_g tow, sfTexture *texture, v2f scale)
+tow_g choose_texture2(global_s *all, tow_g tow, sft *texture, v2f scale)
 {
     if (tow.type == 1) {
         if (sfSprite_getPosition(tow.sprite).x > 1000)
@@ -69,7 +69,7 @@ tow_g choose_texture2(global_s *all, tow_g tow, sfTexture *texture, v2f scale)
         if (sfSprite_getPosition(tow.sprite).x > 1000)
             all->more = 0;
         else
-            all->more = 100;
+            all->more = 60;
         texture = sfTexture_createFromFile("res/sprites/wp2_spt.png", NULL);
         sfSprite_setScale(tow.sprite, scale);
         sfssp(tow.sprite, tsvf(tow.pos.x - all->more, tow.pos.y + 77));
@@ -96,11 +96,25 @@ tow_g choose_texture(global_s *all, tow_g tow)
 
 void choose_target_list(list_enemy *list, sfVector2f *pos)
 {
-    int len = list_len_2(list);
+    int len = list_len_2(list) - 1;
     sfFloatRect pos_enemy;
     for (int  i = 0; i != len; i += 1) {
         pos_enemy = get_enemy(list, i).col;
         if (pos_enemy.left > pos->x) {
+            pos->x = pos_enemy.left + ((pos_enemy.width) / 2);
+            pos->y = pos_enemy.top + ((pos_enemy.height) / 2);
+        }
+    }
+
+}
+
+void choose_target_list_rev(list_enemy *list, sfVector2f *pos)
+{
+    int len = list_len_2(list) - 1;
+    sfFloatRect pos_enemy;
+    for (int  i = 0; i != len; i += 1) {
+        pos_enemy = get_enemy(list, i).col;
+        if (pos_enemy.left < pos->x) {
             pos->x = pos_enemy.left + ((pos_enemy.width) / 2);
             pos->y = pos_enemy.top + ((pos_enemy.height) / 2);
         }
@@ -125,44 +139,75 @@ void choose_target(global_s *all, tow_g *tow)
             all->verif_l = 1;
         else
             all->verif_l = 0;
-        // printf("enemy: %f\n", tow->target.y);
+    } else {
+        pos.x = 1920;
+        choose_target_list_rev(list_mecha_rev, &pos);
+        if (pos.x >= 1920)
+            all->verif_r = 1;
+        else
+            all->verif_r = 0;
     }
-    // choose_target_list(list_car, &pos);
-    // choose_target_list(list_mecha, &pos);
 }
 
 void print_weapons(global_s *all)
 {
     int i = 0;
     int len = list_len(all->sprite.game.list_tow);
+    enemy_s bullet;
+    int numt = 0;
     sfFloatRect rect;
-    for (; i != len; i += 1) {
+    for (int len_bul = 0; i != len; i += 1) {
         tow_g tow = get_element4(all->sprite.game.list_tow, i);
         rect = sfSprite_getGlobalBounds(tow.sprite);
         if (sfFloatRect_contains(&rect, all->pos_mouse.x, all->pos_mouse.y)) {
-            sfSprite_setPosition(tow.sprite, tsvf(tow.pos.x - 2, tow.pos.y - 3));
+            sfssp(tow.sprite, tsvf(tow.pos.x - 2, tow.pos.y - 3));
             if (all->event->type == sfEvtMouseButtonPressed) {
                 all->sprite.game.is_bar = True;
                 all->sprite.game.wc_tower = i;
             }
         } else {
-            sfSprite_setPosition(tow.sprite, tsvf(tow.pos.x, tow.pos.y));
+            sfssp(tow.sprite, tow.pos);
         }
         tow = choose_texture(all, tow);
         choose_target(all, &tow);
         if (tow.type > 0) {
-            printf("type: %d target: %f\n", tow.type, tow.target.y);
-            if (tow.target.y > 650)
+            if (tow.target.y > 650) {
                 sfSprite_setRotation(tow.sprite, 0);
-            else
-                sfSprite_setRotation(tow.sprite, 45);
+                if (tow.pos.x == 820 && tow.pos.y == 537) {
+                    sfSprite_setRotation(tow.sprite, -25);
+                    sfssp(tow.sprite, tsvf(tow.pos.x - 100, tow.pos.y + 100));
+                }
+                if (tow.pos.x == 1175 && tow.pos.y == 537) {
+                    sfSprite_setRotation(tow.sprite, 25);
+                    sfssp(tow.sprite, tsvf(tow.pos.x, tow.pos.y + 110));
+                }
+            } else {
+                sfSprite_setRotation(tow.sprite, 0);
+                if (tow.pos.x == 685 && tow.pos.y == 795) {
+                    sfSprite_setRotation(tow.sprite, 25);
+                    sfssp(tow.sprite, tsvf(tow.pos.x - 90, tow.pos.y + 55));
+                }
+                if (tow.pos.x == 1305 && tow.pos.y == 795) {
+                    sfSprite_setRotation(tow.sprite, -25);
+                    sfssp(tow.sprite, tsvf(tow.pos.x, tow.pos.y + 50));
+                }
+            }
         }
-        all->sprite.game.list_tow = free_tow_at(all->sprite.game.list_tow, i);
-        all->sprite.game.list_tow = add_tower(all->sprite.game.list_tow, tow, i);
-            int len_bul = list_len_2(tow.bullet);
+        all->sprite.game.list_tow = fta(all->sprite.game.list_tow, i);
+        all->sprite.game.list_tow = addt(all->sprite.game.list_tow, tow, i);
+            len_bul = list_len_2(tow.bullet);
             if (len_bul >= 1)
-                for (int i = 0; i < len_bul; i++)
-                    sfRenderWindow_drawSprite(all->wind, get_enemy(tow.bullet, i).sprite, NULL);
+                for (int i = 0; i < len_bul; i++) {
+                    bullet = get_enemy(tow.bullet, i);
+                    detect_mecha(all, &bullet, &tow, &numt);
+                    if (numt > 0) {
+                        tow.bullet = free_element_at(tow.bullet, i);
+                        len_bul -= 1;
+                        numt = 0;
+                    }
+                    sfRenderWindow_drawSprite(all->wind, bullet.sprite, NULL);
+                }
         sfRenderWindow_drawSprite(all->wind, tow.sprite, NULL);
+
     }
 }

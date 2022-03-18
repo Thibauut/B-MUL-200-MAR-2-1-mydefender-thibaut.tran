@@ -14,12 +14,10 @@ int sound_bt(global_s *all)
     sfFloatRect rm = sfSprite_getGlobalBounds(all->sprite.menu.bt_left2);
     sfFloatRect rm2 = sfSprite_getGlobalBounds(all->sprite.menu.bt_right2);
     sfVector2i m = sfMouse_getPositionRenderWindow(all->wind);
-    if(all->event->type == sfEvtMouseButtonPressed) {
+    if (all->event->type == sfEvtMouseButtonPressed) {
         if (sfFloatRect_contains(&rm, m.x, m.y))
-            //actvier la structure des sons
             return (1);
         if (sfFloatRect_contains(&rm2, m.x, m.y))
-            //desactvier la structure des sons
             return (0);
     }
     return (3);
@@ -56,12 +54,10 @@ int music_bt(global_s *all)
     sfFloatRect rm = sfSprite_getGlobalBounds(all->sprite.menu.bt_left3);
     sfFloatRect rm2 = sfSprite_getGlobalBounds(all->sprite.menu.bt_right3);
     sfVector2i m = sfMouse_getPositionRenderWindow(all->wind);
-    if(all->event->type == sfEvtMouseButtonPressed) {
+    if (all->event->type == sfEvtMouseButtonPressed) {
         if (sfFloatRect_contains(&rm, m.x, m.y))
-            //actvier la structure des musiques
             return (1);
         if (sfFloatRect_contains(&rm2, m.x, m.y))
-            //desactvier la structure des musiques
             return (0);
     }
     return (3);

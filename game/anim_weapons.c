@@ -12,18 +12,10 @@ void move_bullet(tow_g *tow, int len_bul, global_s *all)
 {
     enemy_s en;
     sfVector2f pos = sfSprite_getPosition(tow->sprite);
-    if (tow->verif_shoot == 1) {
-        tow->bullet = free_element_at(tow->bullet, len_bul - 1);
-        len_bul = len_bul - 1;
-    }
     for (int i = 0 ; i < len_bul; i++) {
         en = get_enemy(tow->bullet, i);
         if (sfSprite_getPosition(tow->sprite).x < 1000) {
-            // printf("float: %f\n", en.move_b.y);
-            // if (tow->type == 1 || tow->type == 4)
             sfSprite_move(en.sprite, tsvf(-10, (en.move_b.y)));
-            // else
-            //     sfSprite_move(en.sprite, tsvf(-10, 0));
             if (sfSprite_getPosition(en.sprite).x < 0) {
                 tow->bullet = free_element_at(tow->bullet, len_bul - 1);
                 len_bul -= 1;
@@ -33,20 +25,21 @@ void move_bullet(tow_g *tow, int len_bul, global_s *all)
                 tow->bullet = free_element_at(tow->bullet, len_bul - 1);
                 len_bul -= 1;
             }
-            sfSprite_move(en.sprite, tsvf(10, 0));
+            sfSprite_move(en.sprite, tsvf(10, en.move_b.y));
         }
     }
     sfClock_restart(tow->clock_b.clock);
 }
 
-void create_bullet_klassico(tow_g *tow, enemy_s t_bullet)
+void create_bullet_klassico(tow_g *tow, enemy_s t_bullet, global_s *all)
 {
     sfVector2f pos = sfSprite_getPosition(tow->sprite);
+    char *b1 = "res/sprites/bullet1.png";
     t_bullet.move_b.x = -10;
     if (pos.x <= 1000) {
-        t_bullet.sprite = create_spriteStocky("res/sprites/bullet1.png", pos.x - 30, pos.y + 10, tsvf(1, 1));
+        t_bullet.sprite = csS(b1, pos.x - 30, pos.y - 6, tsvf(1, 1));
     } else {
-        t_bullet.sprite = create_spriteStocky("res/sprites/bullet1.png", pos.x - 30, pos.y + 10, tsvf(-1, 1));
+        t_bullet.sprite = csS(b1, pos.x - 30, pos.y - 6, tsvf(-1, 1));
     }
     sfVector2f pos_tow = sfSprite_getPosition(t_bullet.sprite);
     float i = (pos_tow.x - tow->target.x);
@@ -56,50 +49,50 @@ void create_bullet_klassico(tow_g *tow, enemy_s t_bullet)
     tow->bullet = add_enemy(tow->bullet, t_bullet, 0);
 }
 
-void create_bullet_avocado(tow_g *tow, enemy_s t_bullet)
+void create_bullet_avocado(tow_g *tow, enemy_s t_bullet, global_s *all)
 {
     sfVector2f pos = sfSprite_getPosition(tow->sprite);
+    char *b2 = "res/sprites/avocado.png";
     if (sfSprite_getPosition(tow->sprite).x < 1000)
-        t_bullet.sprite = create_spriteStocky("res/sprites/avocado.png", pos.x - 10, pos.y + 5, tsvf(0.7, 0.7));
+        t_bullet.sprite = csS(b2, pos.x - 10, pos.y, tsvf(0.7, 0.7));
     else
-        t_bullet.sprite = create_spriteStocky("res/sprites/avocado.png", pos.x - 10, pos.y + 5, tsvf(-0.7, 0.7));
+        t_bullet.sprite = csS(b2, pos.x - 10, pos.y, tsvf(-0.7, 0.7));
     sfVector2f pos_tow = sfSprite_getPosition(t_bullet.sprite);
     float i = (tow->target.x - pos_tow.x) / -10;
     float y = (tow->target.y - pos_tow.y);
     float r = y / i;
     t_bullet.move_b.y = r;
     tow->bullet = add_enemy(tow->bullet, t_bullet, 0);
-    tow->bullet = add_enemy(tow->bullet, t_bullet, 0);
 }
 
-void create_bullet_hunter(tow_g *tow, enemy_s t_bullet)
+void create_bullet_hunter(tow_g *tow, enemy_s t_bullet, global_s *all)
 {
     sfVector2f pos = sfSprite_getPosition(tow->sprite);
+    char *b3 = "res/sprites/hunter.png";
     if (sfSprite_getPosition(tow->sprite).x < 1000)
-        t_bullet.sprite = create_spriteStocky("res/sprites/hunter.png", pos.x - 10, pos.y + 32, tsvf(1, 1));
+        t_bullet.sprite = csS(b3, pos.x - 10, pos.y + 10, tsvf(1, 1));
     else
-        t_bullet.sprite = create_spriteStocky("res/sprites/hunter.png", pos.x - 10, pos.y + 32, tsvf(-1, 1));
+        t_bullet.sprite = csS(b3, pos.x - 10, pos.y + 10, tsvf(-1, 1));
     sfVector2f pos_tow = sfSprite_getPosition(t_bullet.sprite);
     float i = (tow->target.x - pos_tow.x) / -10;
     float y = (tow->target.y - pos_tow.y);
     float r = y / i;
-    // printf("type: %d distance x: %f distance y: %f target: %f move: %f\n", tow->type, i, y, tow->target.y, r);
     t_bullet.move_b.y = r;
     tow->bullet = add_enemy(tow->bullet, t_bullet, 0);
 }
 
-void create_bullet_blaster(tow_g *tow, enemy_s t_bullet)
+void create_bullet_blaster(tow_g *tow, enemy_s t_bullet, global_s *all)
 {
     sfVector2f pos = sfSprite_getPosition(tow->sprite);
+    char *b4 = "res/sprites/blaster.png";
     if (sfSprite_getPosition(tow->sprite).x < 1000)
-        t_bullet.sprite = create_spriteStocky("res/sprites/blaster.png", pos.x - 10, pos.y + 17, tsvf(0.7, 0.7));
+        t_bullet.sprite = csS(b4, pos.x - 10, pos.y, tsvf(0.7, 0.7));
     else
-        t_bullet.sprite = create_spriteStocky("res/sprites/blaster.png", pos.x - 10, pos.y + 17, tsvf(-0.7, 0.7));
+        t_bullet.sprite = csS(b4, pos.x - 10, pos.y, tsvf(-0.7, 0.7));
         sfVector2f pos_tow = sfSprite_getPosition(t_bullet.sprite);
     float i = (tow->target.x - pos_tow.x) / -10;
     float y = (tow->target.y - pos_tow.y);
     float r = y / i;
-    // printf("type: %d distance x: %f distance y: %f target: %f move: %f\n", tow->type, i, y, tow->target.y, r);
     t_bullet.move_b.y = r;
     tow->bullet = add_enemy(tow->bullet, t_bullet, 0);
 }
@@ -115,8 +108,13 @@ void anim_klassico(tow_g *tow, global_s *all)
     tow->clock_b.time = sfClock_getElapsedTime(tow->clock_b.clock);
     tow->clock_b.seconds = tow->clock_b.time.microseconds / 1000000.0;
     if (tow->clock.seconds > 0.05) {
-        if (tow->rect.left == 1132 && all->verif_l == 0)
-            create_bullet_klassico(tow, t_bullet);
+        if (tow->pos.x < 1000) {
+            if (tow->rect.left == 1132 && all->verif_l == 0)
+                create_bullet_klassico(tow, t_bullet, all);
+        } else {
+            if (tow->rect.left == 1132 && all->verif_r == 0)
+                create_bullet_klassico(tow, t_bullet, all);
+        }
         tow->rect.left = tow->rect.left + 283;
         if (tow->rect.left >= 2547)
             tow->rect.left = 0;
@@ -145,7 +143,7 @@ void anim_avocado(tow_g *tow, global_s *all)
         tow->rect.left = tow->rect.left + 177;
         if (tow->rect.left >= 1053) {
             tow->rect.left = 0;
-            create_bullet_avocado(tow, t_bullet);
+            create_bullet_avocado(tow, t_bullet, all);
         }
         sfClock_restart(tow->clock.clock);
     }
@@ -171,7 +169,7 @@ void anim_stazz(tow_g *tow, global_s *all)
         tow->rect.left = tow->rect.left + 290;
         if (tow->rect.left >= 2610) {
             tow->rect.left = 0;
-            create_bullet_hunter(tow, t_bullet);
+            create_bullet_hunter(tow, t_bullet, all);
         }
         sfClock_restart(tow->clock.clock);
     }
@@ -197,8 +195,13 @@ void anim_blaster(tow_g *tow, global_s *all)
         tow->rect.left = tow->rect.left + 246;
         if (tow->rect.left >= 2214) {
             tow->rect.left = 0;
-            if (all->verif_l == 0)
-                create_bullet_blaster(tow, t_bullet);
+            if (tow->pos.x > 1000) {
+                if (all->verif_r == 0)
+                    create_bullet_blaster(tow, t_bullet, all);
+            } else {
+                if (all->verif_l == 0)
+                    create_bullet_blaster(tow, t_bullet, all);
+            }
         }
         sfClock_restart(tow->clock.clock);
     }

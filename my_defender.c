@@ -54,9 +54,6 @@ void destroy_menu(global_s *all)
     sfSprite_destroy(all->sprite.menu.bg_6);
     sfSprite_destroy(all->sprite.menu.bg_7);
     sfSprite_destroy(all->sprite.menu.bg_8);
-    // sfSprite_destroy(all->sprite.menu.bg_bt);
-    // sfSprite_destroy(all->sprite.menu.bg_dia);
-    // sfSprite_destroy(all->sprite.menu.box_dia);
     sfSprite_destroy(all->sprite.menu.bt_1);
     sfSprite_destroy(all->sprite.menu.bt_2);
 }
@@ -86,8 +83,7 @@ int main (int ac, char **av)
         return (0);
     global_s *all = malloc(sizeof(global_s));
     create_all(all, av);
-    // save_info(all);
-    sfRenderWindow_setFramerateLimit(all->wind, 60);
+    sfRenderWindow_setFramerateLimit(all->wind, 120);
     while (sfRenderWindow_isOpen(all->wind)) {
         my_defender(all);
     }

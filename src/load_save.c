@@ -24,9 +24,7 @@ int read_my_file(int fd, char *buffer, int size)
 
 char *file_to_str(char const *filepath)
 {
-    struct stat buf;
-    stat(filepath, &buf);
-    int size = buf.st_size;
+    int size = 4000;
     char *buffer = malloc(sizeof(char) * size);
     int fd = open_my_file(filepath);
     read_my_file(fd, buffer, size);

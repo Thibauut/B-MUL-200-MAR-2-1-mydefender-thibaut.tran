@@ -1,9 +1,6 @@
 {
     "files.associations": {
         "__locale": "c",
-        "bitset": "c",
-        "struct.h": "c",
-        "ios": "c",
-        "chrono": "c"
+        "bitset": "c"
     }
 }

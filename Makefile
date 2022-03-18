@@ -66,12 +66,7 @@ $(NAME)	:	$(OBJ)
 	gcc $(CFLAGS)	$(SRC)	-o	$(NAME)	-I/usr/local/include/	-L/usr/local/	-lcsfml-graphics	-lcsfml-window	-lcsfml-audio	-lcsfml-system
 
 clean :
-	rm	-f	*.o
-	rm	-f	*~
-	rm	-f	src/*.o
-	rm	-f	menu/*.o
-	rm	-f	game/*.o
-	rm	-f	src/new_player/*.o
+	rm	-f	$(OBJ)
 
 fclean :
 	rm	-f	$(NAME)

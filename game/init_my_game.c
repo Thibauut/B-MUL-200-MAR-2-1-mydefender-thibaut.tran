@@ -8,6 +8,10 @@
 #include "../include/func.h"
 #include "../include/struct.h"
 #include "../include/my.h"
+#define l_rs list_rev->enemy.sprite
+#define l_r list_rev->enemy
+#define l_ec list->enemy.clock
+#define l_es list->enemy.sprite
 
 void anim_fx(enemy_s *enemy)
 {
@@ -60,46 +64,34 @@ int dmg(int type, int base)
     }
     if (base == ATTACK)
         dmg = dmg * 1.3;
-    // printf("dmg: %i\n", dmg);
     return (dmg);
 }
-
-    // sfRectangleShape *test1 = sfRectangleShape_create();
-    // sfVector2f v = {all->rect_e->e1.left, all->rect_e->e1.top};
-    // sfVector2f v2 = {all->rect_e->e1.width, all->rect_e->e1.height};
-    // sfRectangleShape_setSize(test1, v2);
-    // sfRectangleShape_setOutlineThickness(test1, 3);
-    // sfRectangleShape_setFillColor(test1, sfTransparent);
-    // sfRectangleShape_setOutlineColor(test1, sfRed);
-    // sfRectangleShape_setPosition(test1, v);
-    // sfRenderWindow_drawRectangleShape(all->wind, test1, NULL);
 
 void enemy2(global_s *all)
 {
     list_enemy *list_rev = all->sprite.game.list_enemy2;
     sfVector2f pos_txt;
     enemy_s enemy;
-    int len2 = list_len_2(list_rev);
+    int len2 = list_len_2(list_rev) - 1;
     for (int i = 0; i != len2; list_rev = list_rev->next, i++) {
-         if (anim_e1_rev(list_rev->enemy.sprite, &list_rev->enemy.clock, 130, all, &list_rev->enemy) == 1) {
-            all->sprite.game.nb_enemy -= 1;
+        if (anim_e1_rev(l_rs, &list_rev->enemy.clock, 130, all, &l_r) == 1) {
+            all->sprite.game.nb_mecha_rev -= 1;
             all->sprite.game.blood += 30;
-            all->sprite.game.list_enemy2 = free_element_at(all->sprite.game.list_enemy2, i);
+            all->sprite.game.l_e2 = fet(all->sprite.game.list_enemy2, i);
             continue;
         }
         pos_txt = sfSprite_getPosition(list_rev->enemy.sprite);
         pos_txt.y = pos_txt.y - 30;
         pos_txt.x = pos_txt.x - 150;
         sfRenderWindow_drawSprite(all->wind, list_rev->enemy.sprite, NULL);
-        sfRenderWindow_drawText(all->wind, pv(pos_txt.x, pos_txt.y, list_rev), NULL);
-        collision_e1_rev(all, list_rev, i);
+        sfrdt(all->wind, pv(pos_txt.x, pos_txt.y, list_rev), NULL);
     }
 }
 
 int enemy3_anim(global_s *all, list_enemy *list)
 {
     int i = 0;
-    i = anim_e3(list->enemy.sprite, &list->enemy.clock, 251, all, &list->enemy);
+    i = anim_e3(l_es, &list->enemy.clock, 251, all, &list->enemy);
     anim_fx(&list->enemy);
     return (i);
 }
@@ -107,14 +99,14 @@ int enemy3_anim(global_s *all, list_enemy *list)
 void enemy3(global_s *all)
 {
     list_enemy *list = all->sprite.game.list_enemy3;
-    int len = list_len_2(list);
+    int len = list_len_2(list) - 1;
     sfVector2f pos_txt;
     enemy_s enemy;
     for (int i = 0; i != len; list = list->next, i++) {
         if (enemy3_anim(all, list) == 1) {
             all->sprite.game.blood += 30;
-            all->sprite.game.nb_enemy -= 1;
-            all->sprite.game.list_enemy3 = free_element_at(all->sprite.game.list_enemy3, i);
+            all->sprite.game.nb_jet -= 1;
+            all->sprite.game.list_enemy3 = fet(all->sprite.game.l_e3, i);
             continue;
         }
         pos_txt = sfSprite_getPosition(list->enemy.sprite);
@@ -123,46 +115,44 @@ void enemy3(global_s *all)
         if (list->enemy.life > 0)
             sfRenderWindow_drawSprite(all->wind, list->enemy.fx, NULL);
         sfRenderWindow_drawSprite(all->wind, list->enemy.sprite, NULL);
-        sfRenderWindow_drawText(all->wind, pv(pos_txt.x, pos_txt.y, list), NULL);
-        collision_e3(all, list, i);
+        sfrdt(all->wind, pv(pos_txt.x, pos_txt.y, list), NULL);
     }
 }
 
 void enemy4(global_s *all)
 {
     list_enemy *list = all->sprite.game.list_enemy4;
-    int len = list_len_2(list);
+    int len = list_len_2(list) - 1;
     sfVector2f pos_txt;
     enemy_s enemy;
     for (int i = 0; i != len; list = list->next, i++) {
-        if (anim_e4(list->enemy.sprite, &list->enemy.clock, 343, all, &list->enemy) == 1) {
-            all->sprite.game.nb_enemy -= 1;
+        if (anim_e4(list->enemy.sprite, &l_ec, 343, all, &list->enemy) == 1) {
+            all->sprite.game.nb_car -= 1;
             all->sprite.game.blood += 30;
-            all->sprite.game.list_enemy4 = free_element_at(all->sprite.game.list_enemy4, i);
+            all->sprite.game.list_enemy4 = fet(all->sprite.game.l_e4, i);
             continue;
         }
         pos_txt = sfSprite_getPosition(list->enemy.sprite);
         pos_txt.y = pos_txt.y - 50;
         pos_txt.x = pos_txt.x + 10;
         sfRenderWindow_drawSprite(all->wind, list->enemy.sprite, NULL);
-        sfRenderWindow_drawText(all->wind, pv(pos_txt.x, pos_txt.y, list), NULL);
-        collision_e4(all, list, i);
+        sfrdt(all->wind, pv(pos_txt.x, pos_txt.y, list), NULL);
     }
 }
 
 void enemy(global_s *all)
 {
     list_enemy *list = all->sprite.game.list_enemy;
-    int len = list_len_2(list);
+    int len = list_len_2(list) - 1;
     sfVector2f pos_txt;
     char *txt_string;
     sfFloatRect r_prev, r_now;
     int verif = 0;
     enemy_s enemy;
     for (int i = 0; i != len; list = list->next, i++) {
-        if (anim_e1(list->enemy.sprite, &list->enemy.clock, 130, all, &list->enemy) == 1) {
-            all->sprite.game.nb_enemy -= 1;
-            all->sprite.game.list_enemy = free_element_at(all->sprite.game.list_enemy, i);
+        if (anim_e1(list->enemy.sprite, &l_ec, 130, all, &list->enemy) == 1) {
+            all->sprite.game.nb_mecha -= 1;
+            all->sprite.game.list_enemy = fet(all->sprite.game.list_enemy, i);
             all->sprite.game.blood += 30;
             continue;
         }
@@ -170,8 +160,7 @@ void enemy(global_s *all)
         pos_txt.y = pos_txt.y - 30;
         pos_txt.x = pos_txt.x + 70;
         sfRenderWindow_drawSprite(all->wind, list->enemy.sprite, NULL);
-        sfRenderWindow_drawText(all->wind, pv(pos_txt.x, pos_txt.y, list), NULL);
-        collision_e1(all, list, i);
+        sfrdt(all->wind, pv(pos_txt.x, pos_txt.y, list), NULL);
     }
 }
 
@@ -200,7 +189,8 @@ void check_events_game(global_s *all)
             sfRenderWindow_close(all->wind);
             all->STATUS = FINISH;
         }
-        if (all->event->type == sfEvtKeyPressed && all->event->key.code == sfKeyEscape) {
+        if (all->event->type == sfEvtKeyPressed
+        && all->event->key.code == sfKeyEscape) {
             if (all->sprite.game.is_bar == False) {
                 if (pause_game(all) == 2)
                     all->STATUS = MAP;
@@ -208,7 +198,8 @@ void check_events_game(global_s *all)
             else
                 all->sprite.game.is_bar = False;
         }
-        if (all->event->type == sfEvtMouseButtonPressed && all->sprite.game.is_bar == True)
+        if (all->event->type == sfEvtMouseButtonPressed
+        && all->sprite.game.is_bar == True)
             check_place_weap(all);
     }
 }

@@ -33,12 +33,13 @@ void draw_pop_up(sfSprite *sprite, global_s *all, pop_up_s *pop)
 {
     pop->clock.time = sfClock_getElapsedTime(pop->clock.clock);
     pop->clock.seconds = pop->clock.time.microseconds / 1000000.0;
-    if ((pop->size >= pop->size_max + (pop->size_max / 10)) && pop->is_pop == True)
+    if ((pop->size >= pop->size_max + (pop->size_max / 10))
+    && pop->is_pop == True)
         pop->is_pop = Down;
-     if (pop->size <= pop->size_max && pop->is_pop == Down) {
-        sfSprite_setScale(sprite, tsvf(pop->size_max, pop->size_max));
-        pop->is_pop = False;
-     }
+    if (pop->size <= pop->size_max && pop->is_pop == Down) {
+            sfSprite_setScale(sprite, tsvf(pop->size_max, pop->size_max));
+            pop->is_pop = False;
+    }
     if (pop->clock.seconds > 0.001) {
         if (pop->is_pop == True) {
             pop->size = pop->size + pop->i;

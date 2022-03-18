@@ -8,123 +8,81 @@
 #include "../include/func.h"
 #include "../include/struct.h"
 
-int collision_e1(global_s *all, list_enemy *list, int r)
+void detect_mecha(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test)
 {
-    int verif = 0;
-    int len_tow = list_len(all->sprite.game.list_tow);
-    for (int i = 0, len_bul = 0; i != len_tow; i++) {
-        if ((i % 2) == 0) {
-            i = i + 1;
-            if (i >= len_tow)
-                return (0);
-        }
-        tow_g tow = get_element4(all->sprite.game.list_tow, i);
-        if (tow.verif_shoot == 1)
-            tow.verif_shoot = 0;
-        len_bul = list_len_2(tow.bullet);
-        if (len_bul >= 1) {
-            enemy_s ene = get_enemy(all->sprite.game.list_enemy, r);
-            enemy_s bull = get_enemy(tow.bullet, len_bul);
-            sfFloatRect rect_b = sfSprite_getGlobalBounds(bull.sprite);
-            if (sfFloatRect_intersects(&ene.col, &rect_b, NULL)) {
-                ene.life = ene.life - dmg(tow.type, all->info_p->base);
-                tow.verif_shoot = 1;
-                all->sprite.game.list_enemy = free_element_at(all->sprite.game.list_enemy, r);
-                all->sprite.game.list_enemy = add_enemy(all->sprite.game.list_enemy, ene, r);
-                return (1);
-            }
+    sfFloatRect rect_b = sfSprite_getGlobalBounds(bullet_l->sprite);
+    sfFloatRect rect_e;
+    enemy_s enemy;
+    int len_mecha = list_len_2(all->sprite.game.list_enemy);
+    for (int i = 0; i != len_mecha; i++) {
+        enemy = get_enemy(all->sprite.game.list_enemy, i);
+        rect_e = rect_e1(all, enemy.sprite);
+        if (sfFloatRect_intersects(&rect_e, &rect_b, NULL)) {
+            enemy.life = enemy.life - dmg(tow->type, all->info_p->base);
+            *test += 1;
+            all->sprite.game.list_enemy = fet(all->sprite.game.list_enemy, i);
+            all->sprite.game.list_enemy = adde(all->sprite.game.l_e, enemy, i);
+            return;
         }
     }
-    return (0);
+    detect_mecha_rev(all, bullet_l, tow, test);
 }
 
-int collision_e1_rev(global_s *all, list_enemy *list, int r)
+void detect_mecha_rev(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test)
 {
-    int verif = 0;
-    int len_tow = list_len(all->sprite.game.list_tow);
-    for (int i = 0; i != len_tow; i++) {
-        if ((i % 2) != 0) {
-            i = i + 1;
-            if (i >= len_tow)
-                return (0);
-        }
-        tow_g tow = get_element4(all->sprite.game.list_tow, i);
-        if (tow.verif_shoot == 1)
-            tow.verif_shoot = 0;
-        int len_bul = list_len_2(tow.bullet);
-        if (len_bul >= 1) {
-            enemy_s ene = get_enemy(all->sprite.game.list_enemy2, r);
-            enemy_s bull = get_enemy(tow.bullet, len_bul);
-            sfFloatRect rect_b = sfSprite_getGlobalBounds(bull.sprite);
-            if (sfFloatRect_intersects(&ene.col, &rect_b, NULL)) {
-                ene.life = ene.life - dmg(tow.type, all->info_p->base);
-                tow.verif_shoot = 1;
-                all->sprite.game.list_enemy2 = free_element_at(all->sprite.game.list_enemy2, r);
-                all->sprite.game.list_enemy2 = add_enemy(all->sprite.game.list_enemy2, ene, r);
-                return (1);
-            }
+    sfFloatRect rect_b = sfSprite_getGlobalBounds(bullet_l->sprite);
+    sfFloatRect rect_e;
+    enemy_s enemy;
+    int len_mecha_rev = list_len_2(all->sprite.game.list_enemy2);
+    for (int i = 0; i != len_mecha_rev; i++) {
+        enemy = get_enemy(all->sprite.game.list_enemy2, i);
+        rect_e = rect_e1_rev(all, enemy.sprite);
+        if (sfFloatRect_intersects(&rect_e, &rect_b, NULL)) {
+            enemy.life = enemy.life - dmg(tow->type, all->info_p->base);
+            *test += 1;
+            all->sprite.game.list_enemy2 = fet(all->sprite.game.l_e2, i);
+            all->sprite.game.l_e2 = adde(all->sprite.game.l_e2, enemy, i);
+            return;
         }
     }
-    return (0);
+    detect_jet(all, bullet_l, tow, test);
 }
 
-
-int collision_e3(global_s *all, list_enemy *list, int r)
+void detect_jet(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test)
 {
-    int verif = 0;
-    int len_tow = list_len(all->sprite.game.list_tow);
-    for (int i = 0; i != len_tow; i++) {
-        // if ((i % 2) != 0) {
-        //     i = i + 1;
-        //     if (i >= len_tow)
-        //         return (0);
-        // }
-        tow_g tow = get_element4(all->sprite.game.list_tow, i);
-        if (tow.verif_shoot == 1)
-            tow.verif_shoot = 0;
-        int len_bul = list_len_2(tow.bullet);
-        if (len_bul >= 1) {
-            enemy_s ene = get_enemy(all->sprite.game.list_enemy3, r);
-            enemy_s bull = get_enemy(tow.bullet, len_bul);
-            sfFloatRect rect_b = sfSprite_getGlobalBounds(bull.sprite);
-            if (sfFloatRect_intersects(&ene.col, &rect_b, NULL)) {
-                ene.life = ene.life - dmg(tow.type, all->info_p->base);
-                tow.verif_shoot = 1;
-                all->sprite.game.list_enemy3 = free_element_at(all->sprite.game.list_enemy3, r);
-                all->sprite.game.list_enemy3 = add_enemy(all->sprite.game.list_enemy3, ene, r);
-                return (1);
-            }
+    sfFloatRect rect_b = sfSprite_getGlobalBounds(bullet_l->sprite);
+    sfFloatRect rect_e;
+    enemy_s enemy;
+    int len_jet = list_len_2(all->sprite.game.list_enemy3);
+    for (int i = 0; i != len_jet; i++) {
+        enemy = get_enemy(all->sprite.game.list_enemy3, i);
+        rect_e = rect_e3(all, enemy.sprite);
+        if (sfFloatRect_intersects(&rect_e, &rect_b, NULL)) {
+                enemy.life = enemy.life - dmg(tow->type, all->info_p->base);
+                *test += 1;
+                all->sprite.game.list_enemy3 = fet(all->sprite.game.l_e3, i);
+                all->sprite.game.l_e3 = adde(all->sprite.game.l_e3, enemy, i);
+                return;
         }
     }
-    return (0);
+    detect_car(all, bullet_l, tow, test);
 }
 
-int collision_e4(global_s *all, list_enemy *list, int r)
+void detect_car(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test)
 {
-    int verif = 0;
-    int len_tow = list_len(all->sprite.game.list_tow);
-    for (int i = 0; i != len_tow; i++) {
-        // if ((i % 2) != 0) {
-        //     i = i + 1;
-        //     if (i >= len_tow)
-        //         return (0);
-        // }
-        tow_g tow = get_element4(all->sprite.game.list_tow, i);
-        if (tow.verif_shoot == 1)
-            tow.verif_shoot = 0;
-        int len_bul = list_len_2(tow.bullet);
-        if (len_bul >= 1) {
-            enemy_s ene = get_enemy(all->sprite.game.list_enemy4, r);
-            enemy_s bull = get_enemy(tow.bullet, len_bul);
-            sfFloatRect rect_b = sfSprite_getGlobalBounds(bull.sprite);
-            if (sfFloatRect_intersects(&ene.col, &rect_b, NULL)) {
-                ene.life = ene.life - dmg(tow.type, all->info_p->base);
-                tow.verif_shoot = 1;
-                all->sprite.game.list_enemy4 = free_element_at(all->sprite.game.list_enemy4, r);
-                all->sprite.game.list_enemy4 = add_enemy(all->sprite.game.list_enemy4, ene, r);
-                return (1);
-            }
+    sfFloatRect rect_b = sfSprite_getGlobalBounds(bullet_l->sprite);
+    sfFloatRect rect_e;
+    enemy_s enemy;
+    int len_jet = list_len_2(all->sprite.game.l_e4);
+    for (int i = 0; i != len_jet; i++) {
+        enemy = get_enemy(all->sprite.game.list_enemy4, i);
+        rect_e = rect_e4(all, enemy.sprite);
+        if (sfFloatRect_intersects(&rect_e, &rect_b, NULL)) {
+            enemy.life = enemy.life - dmg(tow->type, all->info_p->base);
+            *test += 1;
+            all->sprite.game.list_enemy4 = fet(all->sprite.game.l_e4, i);
+            all->sprite.game.l_e4 = adde(all->sprite.game.l_e4, enemy, i);
+            return;
         }
     }
-    return (0);
 }

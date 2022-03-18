@@ -10,7 +10,8 @@
 
 void init_weapons(global_s *all)
 {
-    all->sprite.level.bg_weap = csS("res/menu/menu_weap/bg_weap.png", 0, 0, tsvf(1, 1));
+    char *bg_weap = "res/menu/menu_weap/bg_weap.png";
+    all->sprite.level.bg_weap = csS(bg_weap, 0, 0, tsvf(1, 1));
     create_weapons(all);
     sfVector2f pos = {2000, 0};
     if (is_weap_unclock(all, 2) == 1)
@@ -19,8 +20,6 @@ void init_weapons(global_s *all)
         sfSprite_setPosition(all->sprite.weapons.unlock2, pos);
     if (is_weap_unclock(all, 4) == 1)
         sfSprite_setPosition(all->sprite.weapons.unlock3, pos);
-    // if (is_weap_unclock(all, 5))
-    //     sfSprite_setPosition(all->sprite.weapons.unlock1, pos);
     all->pop6 = pop_up(all, 0.5, 0.04,  all->sprite.weapons.unlock1);
     all->pop7 = pop_up(all, 0.5, 0.04,  all->sprite.weapons.unlock2);
     all->pop8 = pop_up(all, 0.5, 0.04,  all->sprite.weapons.unlock3);

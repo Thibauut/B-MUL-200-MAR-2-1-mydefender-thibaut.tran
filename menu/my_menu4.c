@@ -10,10 +10,6 @@
 
 void is_up_base(global_s *all)
 {
-    // if (all->info_p->coins >= 5000 && all->info_p->pl_base == 4) {
-    //     all->info_p->pl_base = 7;
-    //     all->info_p->coins -= 5000;
-    // }
     if (all->info_p->coins >= 1000 && all->info_p->pl_base == 2) {
         all->info_p->pl_base = 4;
         all->info_p->coins -= 1000;
@@ -33,6 +29,27 @@ void check_upgrade_base(global_s *all)
     }
 }
 
+int pause_menu(global_s *all)
+{
+    all->event = malloc(sizeof(sfEvent));
+    sfRenderWindow_clear(all->wind, sfBlack);
+    all->verif_save = 0;
+    while (sfRenderWindow_isOpen(all->wind)) {
+        sfRenderWindow_drawSprite(all->wind, asgpmpm, NULL);
+        sfRenderWindow_display(all->wind);
+        while (sfRenderWindow_pollEvent(all->wind, all->event)) {
+            all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);
+            if (all->event->type == sfEvtClosed) {
+                sfRenderWindow_close(all->wind);
+                all->STATUS = FINISH;
+            }
+            if (all->event->type == sfekp && all->event->key.code == ske)
+                return (0);
+        }
+    }
+    return (0);
+}
+
 void check_events_map(global_s *all)
 {
     all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);
@@ -40,8 +57,8 @@ void check_events_map(global_s *all)
         check_button_weap(all);
         check_mouse_icone(all);
         check_upgrade_base(all);
-        if (all->event->type == sfekp && all->event->key.code == sfKeySpace)
-            save_info(all);
+        if (all->event->type == sfekp && all->event->key.code == sfKeyEscape)
+            pause_menu(all);
         if (all->event->type == sfEvtClosed) {
             sfRenderWindow_close(all->wind);
             all->STATUS = FINISH;

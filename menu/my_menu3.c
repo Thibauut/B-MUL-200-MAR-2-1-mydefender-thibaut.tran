@@ -38,14 +38,17 @@ void check_button_weap(global_s *all)
 
 void choose_num_enemy(global_s *all)
 {
-    if (all->level_played <= 3) {
+    if (all->level_played <= 5) {
         all->sprite.game.nb_car = 1;
         all->sprite.game.nb_jet = 1;
+        all->sprite.game.nb_mecha = 5;
+        all->sprite.game.nb_mecha_rev = 5;
     } else {
-        all->sprite.game.nb_car = 5;
-        all->sprite.game.nb_jet = 5;
+        all->sprite.game.nb_car = 6;
+        all->sprite.game.nb_jet = 6;
+        all->sprite.game.nb_mecha = 11;
+        all->sprite.game.nb_mecha_rev = 11;
     }
-    all->sprite.game.nb_mecha = 10;
 }
 
 void game_level(global_s *all, int lvl)

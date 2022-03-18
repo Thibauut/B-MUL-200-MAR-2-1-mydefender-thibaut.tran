@@ -17,7 +17,7 @@ sp_menu create_sprites(void)
 sfrw *create_window(void)
 {
     sfVideoMode vm = {1920, 1080, 32};
-    sfrw* wind = sfRenderWindow_create(vm, "MY DEFENDER", sfDefaultStyle, NULL);
+    sfrw* wind = sfrwc(vm, "MY DEFENDER", sfDefaultStyle, NULL);
     sfRenderWindow_setFramerateLimit(wind, 60);
     return (wind);
 }
@@ -27,7 +27,7 @@ sfText* create_textStocky(char *str, int size, sfColor color, float x, float y)
     sfText* text;
     sfFont* font;
     sfVector2f pos = {x, y}, scale = {1, 1};
-    font = sfFont_createFromFile("res/font/SquadaOne-Regular.ttf");
+    font = sfFont_createFromFile("res/font/my_squad_one.ttf");
     text = sfText_create();
     sfText_setString(text, str);
     sfText_setScale(text, scale);

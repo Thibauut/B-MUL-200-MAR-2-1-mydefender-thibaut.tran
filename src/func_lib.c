@@ -37,7 +37,6 @@ char *my_strdup(char *str)
     return temp;
 }
 
-
 char *my_strdup2(char const *str)
 {
     int i = 0;

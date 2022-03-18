@@ -23,12 +23,11 @@ void close_weap(global_s *all)
             restart_pop(&all->pop1);
         }
     }
-    if (all->event->type == sfEvtKeyPressed && all->event->key.code == sfKeyEscape) {
+    if (all->event->type == sfekp && all->event->key.code == ske) {
         all->STATUS = MAP;
         restart_pop(&all->pop5);
         restart_pop(&all->pop1);
     }
-
 }
 
 void buy_weapons(global_s *all)
@@ -36,7 +35,6 @@ void buy_weapons(global_s *all)
     sfFloatRect rect_2 = sfSprite_getGlobalBounds(all->sprite.weapons.unlock1);
     sfFloatRect rect_3 = sfSprite_getGlobalBounds(all->sprite.weapons.unlock2);
     sfFloatRect rect_4 = sfSprite_getGlobalBounds(all->sprite.weapons.unlock3);
-    // sfFloatRect rect_5 = sfSprite_getGlobalBounds(all->sprite.weapons.unlock5);
     if (sfFloatRect_contains(&rect_2, all->pos_mouse.x, all->pos_mouse.y)) {
         if (is_weap_unclock(all, 2) == 0)
             can_buy_weap(all, 2);
@@ -49,10 +47,6 @@ void buy_weapons(global_s *all)
         if (is_weap_unclock(all, 4) == 0)
             can_buy_weap(all, 4);
     }
-    // if (sfFloatRect_contains(&rect_5, all->pos_mouse.x, all->pos_mouse.y)) {
-    //     if (is_weap_unclock(all, 5) == 0)
-    //         can_buy_weap(all, 5);
-    // }
 }
 
 void check_events_weap(global_s *all)
@@ -67,8 +61,8 @@ void check_events_weap(global_s *all)
 
 void refresh_clock_pop(global_s *all)
 {
-    all->sprite.other.cl_pop.time = sfClock_getElapsedTime(all->sprite.other.cl_pop.clock);
-    all->sprite.other.cl_pop.seconds = all->sprite.other.cl_pop.time.microseconds / 1000000.0;
+    all->sprite.other.cl_pop.time = sfcget(all->sprite.other.cl_pop.clock);
+    all->sprite.other.cl_pop.sec = all->sprite.other.cl_pop.tms / 1000000.0;
 }
 
 void my_weapons(global_s *all)
