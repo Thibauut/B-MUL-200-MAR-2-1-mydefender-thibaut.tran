@@ -79,29 +79,3 @@ int pause_save(global_s *all)
     }
     return (0);
 }
-
-int pause_game(global_s *all)
-{
-    all->event = malloc(sizeof(sfEvent));
-    init_pause_rect(all);
-    all->verif_save = 0;
-    while (sfRenderWindow_isOpen(all->wind)) {
-        pause_draw(all);
-        while (sfRenderWindow_pollEvent(all->wind, all->event)) {
-            all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);
-            if (all->event->type == sfEvtClosed) {
-                sfRenderWindow_close(all->wind);
-                all->STATUS = FINISH;
-            }
-            if (all->event->type == sfEvtKeyPressed
-            && all->event->key.code == sfKeyEscape)
-                return (0);
-            if (pause_resume(all) == 1)
-                return (0);
-            if (pause_exit(all) == 1)
-                return (2);
-            pause_save(all);
-        }
-    }
-    return (0);
-}

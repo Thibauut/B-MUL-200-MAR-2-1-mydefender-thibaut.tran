@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** Visual Studio Live Share (Workspace)
+** B-MUL-200-MAR-2-1-mydefender-thibaut.tran
 ** File description:
 ** ch_name.c
 */
@@ -17,7 +17,7 @@ int ask_name_event(global_s *all)
         }
         if (all->event->key.code == sfKeyEnter && my_strlen(all->ask) > 4) {
             all->is_ask = WEAPONS;
-            all->info_p->name = ctS(all->ask, 30, sfBlack, 200, 400);
+            all->info_p->name = ctS(all->ask, 30, sfBlack, tsvf(200, 400));
             return (1);
         }
     }
@@ -38,9 +38,9 @@ void is_ask(global_s *all)
     sfRenderWindow_clear(all->wind, sfBlack);
     sfRenderWindow_drawSprite(all->wind, all->sprite.menu.more_bg, NULL);
     sfRenderWindow_drawSprite(all->wind, all->sprite.menu.box_dia, NULL);
-    sfText *text2 = create_textStocky(all->ask_1, 80, sfBlack, 600, 100);
+    sfText *text2 = create_textStocky(all->ask_1, 80, sfBlack, tsvf(600, 100));
     sfRenderWindow_drawText(all->wind, text2, NULL);
-    sfText *text = create_textStocky(all->ask, 60, sfBlack, 705, 710);
+    sfText *text = create_textStocky(all->ask, 60, sfBlack, tsvf(705, 710));
     sfRenderWindow_drawText(all->wind, text, NULL);
     sfText_destroy(text2), sfText_destroy(text);
     sfRenderWindow_display(all->wind);

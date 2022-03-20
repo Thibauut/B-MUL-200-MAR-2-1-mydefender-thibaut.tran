@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** Visual Studio Live Share (Workspace)
+** B-MUL-200-MAR-2-1-mydefender-thibaut.tran
 ** File description:
 ** struct.h
 */
@@ -48,6 +48,7 @@
 #define sfso sfSprite_setOrigin
 #define sfssp sfSprite_setPosition
 #define sfcget sfClock_getElapsedTime
+#define sfsst sfSprite_setTexture
 #define tms time.microseconds
 #define fta free_tow_at
 #define addt add_tower
@@ -65,8 +66,10 @@
 #define asgpmpm all->sprite.game.pause_menu.pause_menu
 #define t11 tsvf(1, 1)
 #define t07 tsvf(0.75, 0.75)
-#define ctsss ctS(i_a(all->info_p->coins), 47, w, 200, 115)
+#define ctsss ctS(i_a(all->info_p->coins), 47, w, tsvf(200, 115))
 #define asl all->sprite.level
+#define sm1 all->sounds.sound1
+#define asg all->sprite.game
 
 typedef enum {
     False,
@@ -381,12 +384,12 @@ sfFloatRect rect_e3(global_s *all, sfSprite *spt);
 sfFloatRect rect_e4(global_s *all, sfSprite *spt);
 list_enemy *fill_enemy_4(global_s *all);
 void enemy4(global_s *all);
-int anim_e1(sfSprite *spt, one_cl *cl, int i, global_s *all, enemy_s *en);
-int anim_e1_rev(sfSprite *spt, one_cl *cl, int i, global_s *all, enemy_s *en);
-int anim_e3(sfSprite *spt, one_cl *cl, int i, global_s* all, enemy_s *en);
-int anim_e4(sfSprite *spt, one_cl *cl, int i, global_s* all, enemy_s *en);
+int anim_e1(one_cl *cl, int i, global_s *all, enemy_s *en);
+int anim_e1_rev(one_cl *cl, int i, global_s *all, enemy_s *en);
+int anim_e3(one_cl *cl, int i, global_s* all, enemy_s *en);
+int anim_e4(one_cl *cl, int i, global_s* all, enemy_s *en);
 sfRenderWindow *create_window(void);
-sfText *ctS(char *str, int size, sfColor color, float x, float y);
+sfText *ctS(char *str, int size, sfColor color, sfVector2f pos);
 sfSprite *csS(const char *filename, int x, int y, v2f size);
 tow_g choose_texture2(global_s *all, tow_g tow, sft *texture, v2f scale);
 void create_all(global_s *all, char **av);
@@ -459,6 +462,7 @@ void reset_texture_base(global_s *all);
 int more_event(global_s *all);
 void anim_klassico(tow_g *tow, global_s *all);
 void anim_avocado(tow_g *tow, global_s *all);
+void check_events_game(global_s *all);
 void anim_stazz(tow_g *tow, global_s *all);
 void anim_blaster(tow_g *tow, global_s *all);
 void my_game(global_s *all);
@@ -470,11 +474,14 @@ void is_draw_wep(sfSprite *spt, int num, global_s *all);
 void print_weapons(global_s *all);
 void enemy(global_s *all);
 void move_clouds(global_s *all);
+list_enemy *fill_enemy_3_rev(global_s *all);
+list_enemy *fill_enemy_4_rev(global_s *all);
+sp_menu create_spt_menu2(sp_menu menu);
 void print_weapons(global_s *all);
 void check_place_weap(global_s *all);
 int pause_game(global_s *all);
 void detect_mecha(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test);
-void detect_mecha_rev(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test);
+void detect_mecha_rev(global_s *all, enemy_s *bullet_l, tow_g *tow, int *t);
 void detect_jet(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test);
 void detect_car(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test);
 void ask_name(global_s *all);
@@ -490,18 +497,71 @@ void check_events_map(global_s *all);
 void check_events(global_s *all);
 void draw_menu_parallax(global_s *all);
 void anim_parallax(global_s *all);
+void info_base(global_s *all);
 void anim_button(global_s *all);
 void enemy3(global_s *all);
 void free_game(global_s *all);
 sfFloatRect rect_e3_rev(global_s *all, sfSprite *spt);
 void enemy3_rev(global_s *all);
 int enemy3_rev_anim(global_s *all, list_enemy *list);
-int anim_e3_rev(sfSprite *spt, one_cl *cl, int i, global_s* all, enemy_s *en);
+int anim_e3_rev(one_cl *cl, int i, global_s* all, enemy_s *en);
 list_enemy *fill_enemy_3_rev(global_s *all);
 void detect_jet_rev(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test);
 list_enemy *fill_enemy_4_rev(global_s *all);
 sfFloatRect rect_e4_rev(global_s *all, sfSprite *spt);
-int anim_e4_rev(sfSprite *spt, one_cl *cl, int i, global_s* all, enemy_s *en);
+int anim_e4_rev(one_cl *cl, int i, global_s* all, enemy_s *en);
 void enemy4_rev(global_s *all);
 void detect_car_rev(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test);
 sfMusic *init_music(char *str, int i, sfBool loop);
+void draw_bg(global_s *all);
+void draw_bg2(global_s *all);
+void draw_bg3(global_s *all);
+int exit_win_bt(global_s *all);
+void destroy_menu(global_s *all);
+void destroy_menu2(global_s *all);
+void create_sprites_game3(global_s *all);
+void create_sprites_game4(global_s *all);
+void create_sprites_game5(global_s *all);
+void create_sprites_game2(global_s *all);
+sfFloatRect rect_e4_rev(global_s *all, sfSprite *spt);
+void is_wep_draw(global_s *all);
+void print_base_selected(global_s *all);
+void print_weapons2(global_s *all, tow_g *tow);
+void print_weapons3(global_s *all, tow_g *tow);
+void print_weapons4(global_s *all, tow_g *tow, sfFloatRect rect, int i);
+void print_weapons5(global_s *all, tow_g *tow, int i);
+void choose_target(global_s *all, tow_g *tow);
+void anim_fx_rev(enemy_s *enemy);
+sfText *pv(float x, float y, list_enemy *list);
+int dmg(int type, int base);
+void anim_fx(enemy_s *enemy);
+void init_list(global_s *all);
+int pause_game(global_s *all);
+void anim_klassico(tow_g *tow, global_s *all);
+void anim_avocado(tow_g *tow, global_s *all);
+void anim_stazz(tow_g *tow, global_s *all);
+void anim_blaster(tow_g *tow, global_s *all);
+void create_bullet_klassico(tow_g *tow, enemy_s t_bullet, global_s *all);
+void create_bullet_avocado(tow_g *tow, enemy_s t_bullet, global_s *all);
+void create_bullet_hunter(tow_g *tow, enemy_s t_bullet, global_s *all);
+void create_bullet_blaster(tow_g *tow, enemy_s t_bullet, global_s *all);
+void move_bullet(tow_g *tow, int len_bul, global_s *all);
+void detect_car_rev(global_s *all, enemy_s *bullet_l, tow_g *tow, int *test);
+int pause_resume(global_s *all);
+void pause_draw(global_s *all);
+int pause_exit(global_s *all);
+int pause_save(global_s *all);
+void init_pause_rect(global_s *all);
+void event_close_opt(global_s *all);
+void pause_menu_draw(global_s *all);
+int pause_save_menu(global_s *all);
+int pause_exit_menu(global_s *all);
+void check_upgrade_base(global_s *all);
+void loose_game(global_s *all);
+sfVector2f transform_vf(float x, float y);
+void check_mouse_icone(global_s *all);
+void my_draw_levels2(global_s *all);
+void my_draw_levels(global_s *all);
+void choose_icone_anim(sfSprite *sprite, global_s *all, int lvl);
+void info_update(global_s *all);
+void draw_price_base(global_s *all);

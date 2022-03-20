@@ -16,11 +16,11 @@ void find_name(global_s *all)
         all->is_ask = ASKING;
     else {
         int j = 0;
-        i++;
+        i += 1;
         char *res = malloc(sizeof(char) * my_strlen(all->info_p->tab[1]));
-        for (; all->info_p->tab[1][i] != '\0'; i++, j++)
+        for (; all->info_p->tab[1][i] != '\0'; i += 1, j += 1)
             res[j] = all->info_p->tab[1][i];
-        all->info_p->name = create_textStocky(res, 30, sfBlack, 200, 400);
+        all->info_p->name = ctS(res, 30, sfBlack, tsvf(200, 400));
         all->is_ask = FINISH;
     }
 }

@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** Visual Studio Live Share (Workspace)
+** B-MUL-200-MAR-2-1-mydefender-thibaut.tran
 ** File description:
 ** pop_up.c
 */
@@ -29,10 +29,15 @@ pop_up_s pop_up(global_s *all, float size_max, float i, sfSprite *sprite)
     return (pop);
 }
 
-void draw_pop_up(sfSprite *sprite, global_s *all, pop_up_s *pop)
+void refresh_my__clock_pop(pop_up_s *pop)
 {
     pop->clock.time = sfClock_getElapsedTime(pop->clock.clock);
     pop->clock.seconds = pop->clock.time.microseconds / 1000000.0;
+}
+
+void draw_pop_up(sfSprite *sprite, global_s *all, pop_up_s *pop)
+{
+    refresh_my__clock_pop(pop);
     if ((pop->size >= pop->size_max + (pop->size_max / 10))
     && pop->is_pop == True)
         pop->is_pop = Down;

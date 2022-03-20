@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** Visual Studio Live Share (Workspace)
+** B-MUL-200-MAR-2-1-mydefender-thibaut.tran
 ** File description:
 ** save_info.c
 */

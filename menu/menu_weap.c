@@ -1,12 +1,13 @@
 /*
 ** EPITECH PROJECT, 2021
-** Visual Studio Live Share (Workspace)
+** B-MUL-200-MAR-2-1-mydefender-thibaut.tran
 ** File description:
 ** menu_weap.c
 */
 
 #include "../include/func.h"
 #include "../include/struct.h"
+#define aswu2 all->sprite.weapons.unlock2
 
 void close_weap(global_s *all)
 {
@@ -18,10 +19,8 @@ void close_weap(global_s *all)
     }
     if (sfFloatRect_contains(&rect, all->pos_mouse.x, all->pos_mouse.y)) {
         if (all->event->type == sfEvtMouseButtonPressed) {
-            if (all->sounds.active == sfTrue) {
-                sfSound_stop(all->sounds.sound1);
-                sfSound_play(all->sounds.sound1);
-            }
+            if (all->sounds.active == sfTrue)
+                sfSound_stop(sm1), sfSound_play(sm1);
             all->STATUS = MAP;
             restart_pop(&all->pop5);
             restart_pop(&all->pop1);
@@ -36,30 +35,23 @@ void close_weap(global_s *all)
 
 void buy_weapons(global_s *all)
 {
-    sfFloatRect rect_2 = sfSprite_getGlobalBounds(all->sprite.weapons.unlock1);
-    sfFloatRect rect_3 = sfSprite_getGlobalBounds(all->sprite.weapons.unlock2);
-    sfFloatRect rect_4 = sfSprite_getGlobalBounds(all->sprite.weapons.unlock3);
-    if (sfFloatRect_contains(&rect_2, all->pos_mouse.x, all->pos_mouse.y)) {
-        if (all->sounds.active == sfTrue) {
-            sfSound_stop(all->sounds.sound1);
-            sfSound_play(all->sounds.sound1);
-        }
+    sffr rect_2 = sfggb(all->sprite.weapons.unlock1), rect_3 = sfggb(aswu2);
+    sffr rect_4 = sfggb(all->sprite.weapons.unlock3);
+    if (sffrc(&rect_2, all->pos_mouse.x, all->pos_mouse.y)) {
+        if (all->sounds.active == sfTrue)
+            sfSound_stop(all->sounds.sound1), sfSound_play(all->sounds.sound1);
         if (is_weap_unclock(all, 2) == 0)
             can_buy_weap(all, 2);
     }
-    if (sfFloatRect_contains(&rect_3, all->pos_mouse.x, all->pos_mouse.y)) {
-        if (all->sounds.active == sfTrue) {
-            sfSound_stop(all->sounds.sound1);
-            sfSound_play(all->sounds.sound1);
-        }
+    if (sffrc(&rect_3, all->pos_mouse.x, all->pos_mouse.y)) {
+        if (all->sounds.active == sfTrue)
+            sfSound_stop(all->sounds.sound1), sfSound_play(all->sounds.sound1);
         if (is_weap_unclock(all, 3) == 0)
             can_buy_weap(all, 3);
     }
-    if (sfFloatRect_contains(&rect_4, all->pos_mouse.x, all->pos_mouse.y)) {
-        if (all->sounds.active == sfTrue) {
-            sfSound_stop(all->sounds.sound1);
-            sfSound_play(all->sounds.sound1);
-        }
+    if (sffrc(&rect_4, all->pos_mouse.x, all->pos_mouse.y)) {
+        if (all->sounds.active == sfTrue)
+            sfSound_stop(all->sounds.sound1), sfSound_play(all->sounds.sound1);
         if (is_weap_unclock(all, 4) == 0)
             can_buy_weap(all, 4);
     }

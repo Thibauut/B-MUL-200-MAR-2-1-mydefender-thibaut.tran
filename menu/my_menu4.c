@@ -85,71 +85,8 @@ void pause_menu_draw(global_s *all)
     sfrwds(all->wind, all->sprite.game.pause_menu.exit_menu, NULL);
     sfrwds(all->wind, all->sprite.game.pause_menu.save_menu, NULL);
     if (all->verif_save_menu == 1) {
-            sfrwds(all->wind, all->sprite.game.pause_menu.save_icon_menu, NULL);
-            all->verif_save_menu = 0;
+        sfrwds(all->wind, all->sprite.game.pause_menu.save_icon_menu, NULL);
+        all->verif_save_menu = 0;
     }
     sfRenderWindow_display(all->wind);
-}
-
-int pause_menu(global_s *all)
-{
-    all->event = malloc(sizeof(sfEvent));
-    sfRenderWindow_clear(all->wind, sfBlack);
-    all->verif_save = 0;
-    while (sfRenderWindow_isOpen(all->wind)) {
-        pause_menu_draw(all);
-        while (sfRenderWindow_pollEvent(all->wind, all->event)) {
-            all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);
-            if (all->event->type == sfEvtClosed) {
-                sfRenderWindow_close(all->wind);
-                all->STATUS = FINISH;
-            }
-            if (all->event->type == sfekp && all->event->key.code == ske)
-                return (0);
-            if (pause_exit_menu(all) == 1) {
-                sfRenderWindow_close(all->wind);
-                all->STATUS = FINISH;
-            }
-            pause_save_menu(all);
-        }
-    }
-    return (0);
-}
-
-void check_events_map(global_s *all)
-{
-    all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);
-    while (sfRenderWindow_pollEvent(all->wind, all->event)) {
-        check_button_weap(all);
-        check_mouse_icone(all);
-        check_upgrade_base(all);
-        if (all->event->type == sfekp && all->event->key.code == sfKeyEscape)
-            pause_menu(all);
-        if (all->event->type == sfEvtClosed) {
-            sfRenderWindow_close(all->wind);
-            all->STATUS = FINISH;
-        }
-    }
-}
-
-void my_map(global_s *all)
-{
-    if (all->musics.active == sfTrue && all->i == 0) {
-        sfMusic_stop(all->musics.music2);
-        sfMusic_play(all->musics.music2);
-        all->i = 1;
-    }
-    choose_icons_level(all);
-    my_draw_levels(all);
-    check_events_map(all);
-}
-
-void print_light(global_s *all)
-{
-    if (all->verif.verif_1 != 0) {
-        sfSprite_setOrigin(all->sprite.level.light, tsvf(382, 382));
-        sfSprite_rotate(all->sprite.level.light, 1);
-        sfSprite_setPosition(all->sprite.level.light, all->verif.pos_1);
-        sfRenderWindow_drawSprite(all->wind, all->sprite.level.light, NULL);
-    }
 }

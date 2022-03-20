@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** Visual Studio Live Share (Workspace)
+** B-MUL-200-MAR-2-1-mydefender-thibaut.tran
 ** File description:
 ** base_p.c
 */
@@ -25,6 +25,7 @@ void base_done(global_s *all)
         all->STATUS = MAP;
     }
 }
+
 void check_choose_base(global_s *all)
 {
     all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);

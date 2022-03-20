@@ -62,14 +62,3 @@ sfFloatRect rect_e4(global_s *all, sfSprite *spt)
     rect.top += 65;
     return (rect);
 }
-
-sfFloatRect rect_e4_rev(global_s *all, sfSprite *spt)
-{
-    sfFloatRect rect;
-    rect = sfSprite_getGlobalBounds(spt);
-    rect.width -= 180;
-    rect.height -= 123;
-    rect.left += 120;
-    rect.top += 65;
-    return (rect);
-}

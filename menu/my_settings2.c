@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** Visual Studio Live Share (Workspace)
+** B-MUL-200-MAR-2-1-mydefender-thibaut.tran
 ** File description:
 ** my_settings2.c
 */
@@ -11,23 +11,19 @@
 
 int sound_bt(global_s *all)
 {
-    sfFloatRect rm = sfSprite_getGlobalBounds(all->sprite.menu.bt_left2);
-    sfFloatRect rm2 = sfSprite_getGlobalBounds(all->sprite.menu.bt_right2);
+    sffr rm = sfggb(all->sprite.menu.bt_left2);
+    sffr rm2 = sfggb(all->sprite.menu.bt_right2);
     sfVector2i m = sfMouse_getPositionRenderWindow(all->wind);
     if (all->event->type == sfEvtMouseButtonPressed) {
         if (sfFloatRect_contains(&rm, m.x, m.y)) {
-            if (all->sounds.active == sfTrue) {
-                sfSound_stop(all->sounds.sound1);
-                sfSound_play(all->sounds.sound1);
-            }
+            if (all->sounds.active == sfTrue)
+                sfSound_stop(sm1), sfSound_play(sm1);
             all->sounds.active = sfTrue;
             return (1);
         }
         if (sfFloatRect_contains(&rm2, m.x, m.y)) {
-            if (all->sounds.active == sfTrue) {
-                sfSound_stop(all->sounds.sound1);
-                sfSound_play(all->sounds.sound1);
-            }
+            if (all->sounds.active == sfTrue)
+                sfSound_stop(sm1), sfSound_play(sm1);
             all->sounds.active = sfFalse;
             return (0);
         }
@@ -69,30 +65,20 @@ int music_bt(global_s *all)
     if (all->event->type == sfEvtMouseButtonPressed) {
         if (sfFloatRect_contains(&rm, m.x, m.y)) {
             if (all->sounds.active == sfTrue) {
-                sfSound_stop(all->sounds.sound1);
-                sfSound_play(all->sounds.sound1);
+                sfSound_stop(sm1);
+                sfSound_play(sm1);
             }
             all->musics.active = sfTrue;
             return (1);
         }
         if (sfFloatRect_contains(&rm2, m.x, m.y)) {
-            if (all->sounds.active == sfTrue) {
-                sfSound_stop(all->sounds.sound1);
-                sfSound_play(all->sounds.sound1);
-            }
+            if (all->sounds.active == sfTrue)
+                sfSound_stop(sm1), sfSound_play(sm1);
             all->musics.active = sfFalse;
             return (0);
         }
     }
     return (3);
-}
-
-void event_close_opt(global_s *all)
-{
-    if (all->event->type == sfEvtClosed) {
-        sfRenderWindow_close(all->wind);
-        all->STATUS = FINISH;
-    }
 }
 
 void more_option(global_s *all)
@@ -107,16 +93,12 @@ void more_option(global_s *all)
             event_close_opt(all);
             if (more_bt_close(all) == 1)
                 return;
-            y = verif_button(all, i);
             all->j = fps_checker(y, all->j);
-            m = sound_bt(all);
+            y = verif_button(all, i), m = sound_bt(all), c = music_bt(all);
             all->x = sound_checker(m, all->x);
-            c = music_bt(all);
             all->v = music_checker(c, all->v);
-            if (all->musics.active == sfFalse && all->i == 1) {
-                sfMusic_stop(all->musics.music1);
-                all->i = 0;
-            }
+            if (all->musics.active == sfFalse && all->i == 1)
+                sfMusic_stop(all->musics.music1), all->i = 0;
         }
         draw_more_option(all), draw_fps(all, i[all->j], k[all->x], k[all->v]);
         sfRenderWindow_display(all->wind);

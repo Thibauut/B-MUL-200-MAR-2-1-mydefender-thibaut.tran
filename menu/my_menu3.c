@@ -88,18 +88,3 @@ void choose_icone_anim(sfSprite *sprite, global_s *all, int lvl)
     }
 
 }
-
-void check_mouse_icone(global_s *all)
-{
-    all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);
-    all->verif.verif_1 = 0;
-    choose_icone_anim(all->sprite.level.ic_1, all, 1);
-    choose_icone_anim(all->sprite.level.ic_2, all, 2);
-    choose_icone_anim(all->sprite.level.ic_3, all, 3);
-    choose_icone_anim(all->sprite.level.ic_4, all, 4);
-    choose_icone_anim(all->sprite.level.ic_5, all, 5);
-    choose_icone_anim(all->sprite.level.ic_6, all, 6);
-    choose_icone_anim(all->sprite.level.ic_7, all, 7);
-    choose_icone_anim(all->sprite.level.ic_8, all, 8);
-    choose_icone_anim(all->sprite.level.ic_9, all, 9);
-}

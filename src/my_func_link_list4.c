@@ -14,11 +14,3 @@ sfSprite *get_spt_en(list_enemy *list, int pos)
         list = list->next;
     return (list->enemy.sprite);
 }
-
-list_tow_g *modif_element(list_tow_g *list, int e, v2f pos, sfpt *spt, int typ)
-{
-    list[e].tower.pos = pos;
-    list[e].tower.sprite = spt;
-    list[e].tower.type = typ;
-    return (list);
-}

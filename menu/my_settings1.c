@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2021
-** Visual Studio Live Share (Workspace)
+** B-MUL-200-MAR-2-1-mydefender-thibaut.tran
 ** File description:
 ** my_settings1.c
 */
@@ -35,17 +35,13 @@ int verif_button(global_s *all, char **i)
     sfVector2i m = sfMouse_getPositionRenderWindow(all->wind);
     if (all->event->type == sfEvtMouseButtonPressed) {
         if (sfFloatRect_contains(&rm, m.x, m.y)) {
-            if (all->sounds.active == sfTrue) {
-                sfSound_stop(all->sounds.sound1);
-                sfSound_play(all->sounds.sound1);
-            }
+            if (all->sounds.active == sfTrue)
+                sfSound_stop(sm1), sfSound_play(sm1);
             return (1);
         }
         if (sfFloatRect_contains(&rm2, m.x, m.y)) {
-            if (all->sounds.active == sfTrue) {
-                sfSound_stop(all->sounds.sound1);
-                sfSound_play(all->sounds.sound1);
-            }
+            if (all->sounds.active == sfTrue)
+                sfSound_stop(sm1), sfSound_play(sm1);
             all->fps_verif += 1;
             if (all->fps_verif > 1)
                 return (3);
@@ -59,18 +55,18 @@ void draw_fps(global_s *all, char *i, char *k, char *l)
 {
     char *cfps = i, *sound = k, *musicc = l;
     sfVector2f move = {900, 325}, move2 = {900, 430}, move3 = {900, 530};
-    sfText *fps = create_textStocky(cfps, 100, sfBlack, 910, 325);
+    sfText *fps = create_textStocky(cfps, 100, sfBlack, tsvf(910, 325));
     if (my_strlen(cfps) > 2)
         sfText_setPosition(fps, move);
-    sfText *audio = create_textStocky(sound, 100, sfBlack, 910, 430);
+    sfText *audio = create_textStocky(sound, 100, sfBlack, tsvf(910, 430));
     if (my_strlen(sound) > 2)
         sfText_setPosition(audio, move2);
-    sfText *music = create_textStocky(musicc, 100, sfBlack, 910, 530);
+    sfText *music = create_textStocky(musicc, 100, sfBlack, tsvf(910, 530));
     if (my_strlen(musicc) > 2)
         sfText_setPosition(music, move3);
-    sfText *opt = create_textStocky("FPS :", 100, sfBlack, 300, 330);
-    sfText *opt2 = create_textStocky("SOUND :", 100, sfBlack, 300, 430);
-    sfText *opt3 = create_textStocky("MUSIC :", 100, sfBlack, 300, 530);
+    sfText *opt = create_textStocky("FPS :", 100, sfBlack, tsvf(300, 330));
+    sfText *opt2 = create_textStocky("SOUND :", 100, sfBlack, tsvf(300, 430));
+    sfText *opt3 = create_textStocky("MUSIC :", 100, sfBlack, tsvf(300, 530));
     sfRenderWindow_drawText(all->wind, fps, NULL);
     sfRenderWindow_drawText(all->wind, audio, NULL);
     sfRenderWindow_drawText(all->wind, music, NULL);

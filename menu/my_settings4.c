@@ -44,3 +44,11 @@ int more_bt(global_s *all)
     }
     return (0);
 }
+
+void event_close_opt(global_s *all)
+{
+    if (all->event->type == sfEvtClosed) {
+        sfRenderWindow_close(all->wind);
+        all->STATUS = FINISH;
+    }
+}

@@ -22,11 +22,11 @@ sfrw *create_window(void)
     return (wind);
 }
 
-sfText* create_textStocky(char *str, int size, sfColor color, float x, float y)
+sfText* create_textStocky(char *str, int size, sfColor color, sfVector2f pos)
 {
     sfText* text;
     sfFont* font;
-    sfVector2f pos = {x, y}, scale = {1, 1};
+    sfVector2f scale = {1, 1};
     font = sfFont_createFromFile("res/font/my_squad_one.ttf");
     text = sfText_create();
     sfText_setString(text, str);
