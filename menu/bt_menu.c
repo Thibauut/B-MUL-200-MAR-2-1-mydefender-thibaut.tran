@@ -27,6 +27,10 @@ int play_bt(global_s *all)
         sfSprite_setPosition(all->sprite.menu.bt_2, move);
         sfSprite_setScale(all->sprite.menu.bt_2, sizeup);
         if (all->event->type == sfEvtMouseButtonPressed) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
             all->STATUS = MAP;
             sfFloatRect rect = sfggb(all->sprite.menu.bt_close);
             rect.height = rect.height / 2;
@@ -34,6 +38,10 @@ int play_bt(global_s *all)
             sfso(all->sprite.menu.bt_close, tsvf(rect.width, rect.height));
             sfSprite_setPosition(all->sprite.menu.bt_close, tsvf(1830, 70));
             ask_name(all), choose_base(all);
+            if (all->STATUS == MAP) {
+                sfMusic_stop(all->musics.music1);
+                all->i = 0;
+            }
             my_init_level(all);
         }
     } else {
@@ -60,8 +68,13 @@ int more_bt_close(global_s *all)
     if (sffrc(&all->rect->close, all->pos_mouse.x, all->pos_mouse.y)) {
         sfSprite_setPosition(all->sprite.menu.bt_close, move);
         sfSprite_setScale(all->sprite.menu.bt_close, sizeup);
-        if (all->event->type == sfEvtMouseButtonPressed)
+        if (all->event->type == sfEvtMouseButtonPressed) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
             return (1);
+        }
     } else {
         sfSprite_setScale(all->sprite.menu.bt_close, size);
         sfSprite_setPosition(all->sprite.menu.bt_close, pos);

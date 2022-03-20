@@ -18,7 +18,7 @@ sfrw *create_window(void)
 {
     sfVideoMode vm = {1920, 1080, 32};
     sfrw* wind = sfrwc(vm, "MY DEFENDER", sfDefaultStyle, NULL);
-    sfRenderWindow_setFramerateLimit(wind, 60);
+    sfRenderWindow_setFramerateLimit(wind, 120);
     return (wind);
 }
 
@@ -36,6 +36,15 @@ sfText* create_textStocky(char *str, int size, sfColor color, float x, float y)
     sfText_setCharacterSize(text, size);
     sfText_setPosition(text, pos);
     return (text);
+}
+
+sfMusic *init_music(char *str, int i, sfBool loop)
+{
+    sfMusic *music;
+    music = sfMusic_createFromFile(str);
+    sfMusic_setVolume(music, i);
+    sfMusic_setLoop(music, loop);
+    return (music);
 }
 
 sfIntRect create_rect(int top, int left, int width, int height)

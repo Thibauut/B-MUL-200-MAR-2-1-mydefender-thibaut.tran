@@ -30,6 +30,10 @@ void check_button_weap(global_s *all)
         sfSprite_setScale(all->sprite.level.bt_weap, tsvf(1.03, 1.03));
         sfSprite_setPosition(all->sprite.level.bt_weap, tsvf(1000, 872));
         if (all->event->type == sfEvtMouseButtonPressed) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
             all->STATUS = WEAPONS;
             init_weapons(all);
         }
@@ -54,7 +58,15 @@ void choose_num_enemy(global_s *all)
 void game_level(global_s *all, int lvl)
 {
     if (all->event->type == sfEvtMouseButtonPressed) {
+        if (all->sounds.active == sfTrue) {
+            sfSound_stop(all->sounds.sound1);
+            sfSound_play(all->sounds.sound1);
+        }
         all->STATUS = GAME, all->level_played = lvl;
+        if (all->STATUS == GAME) {
+            sfMusic_stop(all->musics.music2);
+            all->i = 0;
+        }
         choose_num_enemy(all);
         my_init_game(all);
     }

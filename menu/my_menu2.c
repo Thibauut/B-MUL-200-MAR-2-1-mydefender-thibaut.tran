@@ -18,14 +18,21 @@ sfVector2f transform_vf(float x, float y)
 
 void my_init_level2(global_s *all)
 {
+    all->verif_save_menu = 0;
     char *bt_weap = "res/menu/bt_weap.png";
     char *load = "res/sprites/load.png";
+    char *save_bt = "res/game/save_bt.png";
+    char *exit_bt = "res/game/exit_bt.png";
+    char *save_icon = "res/game/save_icon.png";
     asl.bt_weap = csS(bt_weap, 1000, 875, tsvf(1, 1));
     all->pop5 = pop_up(all, 1, 0.1, asl.bt_weap);
     all->pop1 = pop_up(all, 1, 0.1, asl.upgrade_bt);
     all->sprite.game.load = create_spriteStocky(load, 0, 0, tsvf(1, 1));
     asl.txt_coins = ctsss;
     asgpmpm = csS("res/others/pause_menu.png", 0, 0, tsvf(1, 1));
+    all->sprite.game.pause_menu.exit_menu = csS(exit_bt, 830, 800, tsvf(1.5, 1.5));
+    all->sprite.game.pause_menu.save_menu = csS(save_bt, 830, 650, tsvf(1.5, 1.5));
+    all->sprite.game.pause_menu.save_icon_menu = csS(save_icon, 1750, 50, tsvf(0.2, 0.2));
 }
 
 void my_init_level(global_s *all)

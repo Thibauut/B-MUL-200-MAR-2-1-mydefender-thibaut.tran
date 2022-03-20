@@ -22,6 +22,7 @@ list_enemy *create_enemy(enemy_s enemy)
     cell->enemy.clock_fx = enemy.clock_fx;
     cell->enemy.fx = enemy.fx;
     cell->enemy.move_b = enemy.move_b;
+    cell->enemy.bullet = enemy.bullet;
     cell->next = NULL;
     return (cell);
 }

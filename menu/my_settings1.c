@@ -34,9 +34,18 @@ int verif_button(global_s *all, char **i)
     sfFloatRect rm2 = sfSprite_getGlobalBounds(all->sprite.menu.bt_right);
     sfVector2i m = sfMouse_getPositionRenderWindow(all->wind);
     if (all->event->type == sfEvtMouseButtonPressed) {
-        if (sfFloatRect_contains(&rm, m.x, m.y))
+        if (sfFloatRect_contains(&rm, m.x, m.y)) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
             return (1);
+        }
         if (sfFloatRect_contains(&rm2, m.x, m.y)) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
             all->fps_verif += 1;
             if (all->fps_verif > 1)
                 return (3);

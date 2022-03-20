@@ -28,8 +28,25 @@ void draw_bg(global_s *all)
     sfrwds(all->wind, all->sprite.game.brume, NULL);
     sfrwds(all->wind, all->sprite.game.tree, NULL);
     sfrwds(all->wind, all->sprite.game.road, NULL);
-    sfrwds(all->wind, all->sprite.game.base, NULL);
-    sfrwds(all->wind, all->sprite.game.blood_s, NULL);
+}
+
+void draw_bg2(global_s *all)
+{
+    sfrwds(all->wind, all->sprite.game.bg1, NULL);
+    sfrwds(all->wind, all->sprite.game.bg6, NULL);
+    sfrwds(all->wind, all->sprite.game.bg5, NULL);
+    sfrwds(all->wind, all->sprite.game.bg4, NULL);
+    sfrwds(all->wind, all->sprite.game.bg3, NULL);
+    sfrwds(all->wind, all->sprite.game.bg2, NULL);
+}
+
+void draw_bg3(global_s *all)
+{
+    sfrwds(all->wind, all->sprite.game.bg1_1, NULL);
+    sfrwds(all->wind, all->sprite.game.bg5_2, NULL);
+    sfrwds(all->wind, all->sprite.game.bg4_2, NULL);
+    sfrwds(all->wind, all->sprite.game.bg3_2, NULL);
+    sfrwds(all->wind, all->sprite.game.bg2_2, NULL);
 }
 
 int exit_win_bt(global_s *all)
@@ -88,11 +105,30 @@ void win_checker(global_s *all, int nb)
         my_win(all);
 }
 
+void print_power(global_s *all)
+{
+    all->sprite.game.cl_pow.time = sfcget(all->sprite.game.cl_pow.clock);
+    all->sprite.game.cl_pow.sec = all->sprite.game.cl_pow.tms / 1000000.0;
+    if (all->sprite.game.power == True) {
+        sfSprite *atks = csS("res/others/atkspe.png", 0, 0, tsvf(2.5, 2.5));
+        sfRenderWindow_drawSprite(all->wind, atks, NULL);
+        if (all->sprite.game.cl_pow.seconds >= 0.1)
+            all->sprite.game.power = False;
+    }
+}
+
 void print_game(global_s *all)
 {
     sfRenderWindow_clear(all->wind, sfBlack);
     sfrwds(all->wind, all->sprite.game.bg, NULL);
-    draw_bg(all);
+    if (all->level_played < 4)
+        draw_bg(all);
+    if (all->level_played >= 4 && all->level_played < 7)
+        draw_bg2(all);
+    if (all->level_played >= 7 && all->level_played < 10)
+        draw_bg3(all);
+    sfrwds(all->wind, all->sprite.game.base, NULL);
+    sfrwds(all->wind, all->sprite.game.blood_s, NULL);
     sfText_setString(all->sprite.game.blood_x, i_a(all->sprite.game.blood));
     sfRenderWindow_drawText(all->wind, all->sprite.game.blood_x, NULL);
     if (all->sprite.game.is_bar == True) {
@@ -107,9 +143,11 @@ void print_game(global_s *all)
     sfrwds(all->wind, all->sprite.game.life_bs, NULL);
     print_weapons(all);
     enemy4(all);
+    enemy4_rev(all);
     enemy(all);
     enemy2(all);
     enemy3(all);
+    enemy3_rev(all);
     sfrwds(all->wind, all->sprite.game.logo_enemy, NULL);
     int i = all->sprite.game.nb_car + all->sprite.game.nb_mecha;
     int nb = i + all->sprite.game.nb_mecha_rev + all->sprite.game.nb_jet - 4;
@@ -117,5 +155,6 @@ void print_game(global_s *all)
     sfText_setString(all->sprite.game.nb_enemy_t, str);
     win_checker(all, nb);
     sfRenderWindow_drawText(all->wind, all->sprite.game.nb_enemy_t, NULL);
+    print_power(all);
     sfRenderWindow_display(all->wind);
 }

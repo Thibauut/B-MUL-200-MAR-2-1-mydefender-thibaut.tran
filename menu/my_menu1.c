@@ -31,6 +31,11 @@ void check_events(global_s *all)
 void draw_sprite_menu(global_s *all)
 {
     sfRenderWindow_clear(all->wind, sfBlack);
+    if (all->musics.active == sfTrue && all->i == 0) {
+        sfMusic_stop(all->musics.music1);
+        sfMusic_play(all->musics.music1);
+        all->i = 1;
+    }
     anim_parallax(all);
     anim_button(all);
     sfRenderWindow_display(all->wind);

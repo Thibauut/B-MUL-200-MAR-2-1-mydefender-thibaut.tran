@@ -16,8 +16,13 @@ void more_bt_option(global_s *all)
     if (sffrc(&all->rect->option, all->pos_mouse.x, all->pos_mouse.y)) {
         sfSprite_setPosition(all->sprite.menu.bt_option, move);
         sfSprite_setScale(all->sprite.menu.bt_option, sizeup);
-        if (all->event->type == sfEvtMouseButtonPressed)
+        if (all->event->type == sfEvtMouseButtonPressed) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
             more_option(all);
+        }
     } else {
         sfSprite_setScale(all->sprite.menu.bt_option, size);
         sfSprite_setPosition(all->sprite.menu.bt_option, pos);
@@ -58,8 +63,13 @@ void more_bt_tutorial(global_s *all)
     if (sffrc(&all->rect->tutorial, all->pos_mouse.x, all->pos_mouse.y)) {
         sfSprite_setPosition(all->sprite.menu.bt_tutorial, move);
         sfSprite_setScale(all->sprite.menu.bt_tutorial, sizeup);
-        if (all->event->type == sfEvtMouseButtonPressed)
+        if (all->event->type == sfEvtMouseButtonPressed) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
             tutorial(all);
+        }
     } else {
         sfSprite_setScale(all->sprite.menu.bt_tutorial, size);
         sfSprite_setPosition(all->sprite.menu.bt_tutorial, pos);

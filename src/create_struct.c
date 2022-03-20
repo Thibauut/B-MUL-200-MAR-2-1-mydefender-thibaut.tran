@@ -29,6 +29,10 @@ all_cl create_clock(void)
     cl.cl_6 = create_one_clock();
     cl.cl_7 = create_one_clock();
     cl.cl_8 = create_one_clock();
+    cl.cl_9 = create_one_clock();
+    cl.cl_10 = create_one_clock();
+    cl.cl_11 = create_one_clock();
+    cl.cl_12 = create_one_clock();
     cl.cl_more = create_one_clock();
     cl.cl_more2 = create_one_clock();
     cl.cl_e1 = create_one_clock();
@@ -88,9 +92,35 @@ sp_menu create_spt_menu(void)
     return (create_spt_menu2(menu));
 }
 
+sfSound *create_sound(char *path, float i)
+{
+    sfSoundBuffer *music = sfSoundBuffer_createFromFile(path);
+    sfSound *sound = sfSound_create();
+    sfSound_setBuffer(sound, music);
+    sfSound_setVolume(sound, i);
+    return (sound);
+}
+
+void init_sound(global_s *all)
+{
+    all->sounds.sound1 = create_sound("res/music/bt_sound.ogg", 100);
+}
+
+void create_music(global_s *all)
+{
+    all->musics.music1 = init_music("res/music/music1.ogg", 100, sfTrue);
+    all->musics.music2 = init_music("res/music/music2.ogg", 100, sfTrue);
+    all->musics.music3 = init_music("res/music/music3.ogg", 100, sfTrue);
+}
+
 void create_all(global_s *all, char **av)
 {
     all->STATUS = MENU;
+    init_sound(all);
+    create_music(all);
+    all->sounds.active = sfTrue;
+    all->musics.active = sfTrue;
+    all->j = 1, all->x = 0, all->v = 0, all->i = 0;
     my_init_menu(all);
     all->ask = malloc(sizeof(char) * 21);
     all->c_ask = 0;

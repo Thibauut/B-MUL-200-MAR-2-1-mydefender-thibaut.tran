@@ -32,6 +32,10 @@ int more_bt(global_s *all)
         sfSprite_setPosition(all->sprite.menu.bt_1, move);
         sfSprite_setScale(all->sprite.menu.bt_1, sizeup);
         if (all->event->type == sfEvtMouseButtonPressed) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
             more(all);
         }
     } else {

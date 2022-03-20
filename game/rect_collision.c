@@ -30,6 +30,17 @@ sfFloatRect rect_e1_rev(global_s *all, sfSprite *spt)
     return (rect);
 }
 
+sfFloatRect rect_e3_rev(global_s *all, sfSprite *spt)
+{
+    sfFloatRect rect;
+    rect = sfSprite_getGlobalBounds(spt);
+    rect.width -= 130;
+    rect.height -= 173;
+    rect.left += 30;
+    rect.top += 75;
+    return (rect);
+}
+
 sfFloatRect rect_e3(global_s *all, sfSprite *spt)
 {
     sfFloatRect rect;
@@ -48,6 +59,17 @@ sfFloatRect rect_e4(global_s *all, sfSprite *spt)
     rect.width -= 180;
     rect.height -= 123;
     rect.left += 50;
+    rect.top += 65;
+    return (rect);
+}
+
+sfFloatRect rect_e4_rev(global_s *all, sfSprite *spt)
+{
+    sfFloatRect rect;
+    rect = sfSprite_getGlobalBounds(spt);
+    rect.width -= 180;
+    rect.height -= 123;
+    rect.left += 120;
     rect.top += 65;
     return (rect);
 }

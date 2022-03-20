@@ -15,10 +15,22 @@ int sound_bt(global_s *all)
     sfFloatRect rm2 = sfSprite_getGlobalBounds(all->sprite.menu.bt_right2);
     sfVector2i m = sfMouse_getPositionRenderWindow(all->wind);
     if (all->event->type == sfEvtMouseButtonPressed) {
-        if (sfFloatRect_contains(&rm, m.x, m.y))
+        if (sfFloatRect_contains(&rm, m.x, m.y)) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
+            all->sounds.active = sfTrue;
             return (1);
-        if (sfFloatRect_contains(&rm2, m.x, m.y))
+        }
+        if (sfFloatRect_contains(&rm2, m.x, m.y)) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
+            all->sounds.active = sfFalse;
             return (0);
+        }
     }
     return (3);
 }
@@ -55,10 +67,22 @@ int music_bt(global_s *all)
     sfFloatRect rm2 = sfSprite_getGlobalBounds(all->sprite.menu.bt_right3);
     sfVector2i m = sfMouse_getPositionRenderWindow(all->wind);
     if (all->event->type == sfEvtMouseButtonPressed) {
-        if (sfFloatRect_contains(&rm, m.x, m.y))
+        if (sfFloatRect_contains(&rm, m.x, m.y)) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
+            all->musics.active = sfTrue;
             return (1);
-        if (sfFloatRect_contains(&rm2, m.x, m.y))
+        }
+        if (sfFloatRect_contains(&rm2, m.x, m.y)) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
+            all->musics.active = sfFalse;
             return (0);
+        }
     }
     return (3);
 }
@@ -76,7 +100,7 @@ void more_option(global_s *all)
     all->event = malloc(sizeof(sfEvent));
     sfRenderWindow_clear(all->wind, sfBlack);
     char **i = fill_act(), **k = fill_act2();
-    int j = 1, y = 0, x = 0, m = 0, n = 0, c = 0, v = 0;
+    int y = 0, m = 0, n = 0, c = 0;
     while (sfRenderWindow_isOpen(all->wind)) {
         while (sfRenderWindow_pollEvent(all->wind, all->event)) {
             all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);
@@ -84,13 +108,17 @@ void more_option(global_s *all)
             if (more_bt_close(all) == 1)
                 return;
             y = verif_button(all, i);
-            j = fps_checker(y, j);
+            all->j = fps_checker(y, all->j);
             m = sound_bt(all);
-            x = sound_checker(m, x);
+            all->x = sound_checker(m, all->x);
             c = music_bt(all);
-            v = music_checker(c, v);
+            all->v = music_checker(c, all->v);
+            if (all->musics.active == sfFalse && all->i == 1) {
+                sfMusic_stop(all->musics.music1);
+                all->i = 0;
+            }
         }
-        draw_more_option(all), draw_fps(all, i[j], k[x], k[v]);
+        draw_more_option(all), draw_fps(all, i[all->j], k[all->x], k[all->v]);
         sfRenderWindow_display(all->wind);
     }
 }

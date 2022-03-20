@@ -12,18 +12,30 @@ void bases(global_s *all, sffr rec_of, sffr rec_def, sffr rec_pv)
 {
     sfTexture *texture;
     if (sfFloatRect_contains(&rec_of, all->pos_mouse.x, all->pos_mouse.y)) {
+        if (all->sounds.active == sfTrue) {
+            sfSound_stop(all->sounds.sound1);
+            sfSound_play(all->sounds.sound1);
+        }
         reset_texture_base(all);
         texture = sfTexture_createFromFile("res/others/base_atk2.png", NULL);
         sfSprite_setTexture(all->sprite.other.base_of, texture, sfFalse);
         all->info_p->base = ATTACK;
     }
     if (sfFloatRect_contains(&rec_def, all->pos_mouse.x, all->pos_mouse.y)) {
+        if (all->sounds.active == sfTrue) {
+            sfSound_stop(all->sounds.sound1);
+            sfSound_play(all->sounds.sound1);
+        }
         reset_texture_base(all);
         texture = sfTexture_createFromFile("res/others/base_def2.png", NULL);
         sfSprite_setTexture(all->sprite.other.base_def, texture, sfFalse);
         all->info_p->base = DEFENSIVE;
     }
     if (sfFloatRect_contains(&rec_pv, all->pos_mouse.x, all->pos_mouse.y)) {
+        if (all->sounds.active == sfTrue) {
+            sfSound_stop(all->sounds.sound1);
+            sfSound_play(all->sounds.sound1);
+        }
         reset_texture_base(all);
         texture = sfTexture_createFromFile("res/others/base_pv2.png", NULL);
         sfSprite_setTexture(all->sprite.other.base_pv, texture, sfFalse);

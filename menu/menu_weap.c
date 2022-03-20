@@ -18,6 +18,10 @@ void close_weap(global_s *all)
     }
     if (sfFloatRect_contains(&rect, all->pos_mouse.x, all->pos_mouse.y)) {
         if (all->event->type == sfEvtMouseButtonPressed) {
+            if (all->sounds.active == sfTrue) {
+                sfSound_stop(all->sounds.sound1);
+                sfSound_play(all->sounds.sound1);
+            }
             all->STATUS = MAP;
             restart_pop(&all->pop5);
             restart_pop(&all->pop1);
@@ -36,14 +40,26 @@ void buy_weapons(global_s *all)
     sfFloatRect rect_3 = sfSprite_getGlobalBounds(all->sprite.weapons.unlock2);
     sfFloatRect rect_4 = sfSprite_getGlobalBounds(all->sprite.weapons.unlock3);
     if (sfFloatRect_contains(&rect_2, all->pos_mouse.x, all->pos_mouse.y)) {
+        if (all->sounds.active == sfTrue) {
+            sfSound_stop(all->sounds.sound1);
+            sfSound_play(all->sounds.sound1);
+        }
         if (is_weap_unclock(all, 2) == 0)
             can_buy_weap(all, 2);
     }
     if (sfFloatRect_contains(&rect_3, all->pos_mouse.x, all->pos_mouse.y)) {
+        if (all->sounds.active == sfTrue) {
+            sfSound_stop(all->sounds.sound1);
+            sfSound_play(all->sounds.sound1);
+        }
         if (is_weap_unclock(all, 3) == 0)
             can_buy_weap(all, 3);
     }
     if (sfFloatRect_contains(&rect_4, all->pos_mouse.x, all->pos_mouse.y)) {
+        if (all->sounds.active == sfTrue) {
+            sfSound_stop(all->sounds.sound1);
+            sfSound_play(all->sounds.sound1);
+        }
         if (is_weap_unclock(all, 4) == 0)
             can_buy_weap(all, 4);
     }
@@ -54,8 +70,9 @@ void check_events_weap(global_s *all)
     all->pos_mouse = sfMouse_getPositionRenderWindow(all->wind);
     while (sfRenderWindow_pollEvent(all->wind, all->event)) {
         close_weap(all);
-        if (all->event->type == sfEvtMouseButtonPressed)
+        if (all->event->type == sfEvtMouseButtonPressed) {
             buy_weapons(all);
+        }
     }
 }
 

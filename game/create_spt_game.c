@@ -17,7 +17,7 @@ void init_var(global_s *all)
 {
     all->verif_l = 1;
     all->verif_r = 1;
-    all->sprite.game.blood = 3000;
+    all->sprite.game.blood = 200 * all->level_played;
     all->verif_r_bullet = 0;
     all->verif_anim = 0;
 }
@@ -69,6 +69,17 @@ void create_sprites_game5(global_s *all)
     all->sprite.game.brume = csS("res/game/brume.png", 0, 0, tsvf(1, 1));
     all->sprite.game.road = csS("res/menu/6.png", 0, 535, tsvf(1, 1));
     all->sprite.game.tree = csS("res/game/cloud2.png", 0, 60, tsvf(1, 1));
+    all->sprite.game.bg1 = csS("res/game/parallax2/bg1.png", 0, 0, tsvf(1, 1));
+    all->sprite.game.bg2 = csS("res/game/parallax2/bg2.png", 0, 45, tsvf(1, 1));
+    all->sprite.game.bg3 = csS("res/game/parallax2/bg3.png", 0, 0, tsvf(1, 1));
+    all->sprite.game.bg4 = csS("res/game/parallax2/bg4.png", 0, 0, tsvf(1, 1));
+    all->sprite.game.bg5 = csS("res/game/parallax2/bg5.png", 0, 0, tsvf(1, 1));
+    all->sprite.game.bg6 = csS("res/game/parallax2/bg6.png", 0, 0, tsvf(1, 1));
+    all->sprite.game.bg1_1 = csS("res/game/parallax3/bg1.png", 0, 0, tsvf(1, 1));
+    all->sprite.game.bg2_2 = csS("res/game/parallax3/bg2.png", 0, 35, tsvf(1, 1));
+    all->sprite.game.bg3_2 = csS("res/game/parallax3/bg3.png", 0, 0, tsvf(1, 1));
+    all->sprite.game.bg4_2 = csS("res/game/parallax3/bg4.png", 0, 0, tsvf(1, 1));
+    all->sprite.game.bg5_2 = csS("res/game/parallax3/bg5.png", 0, 0, tsvf(1, 1));
 }
 
 void create_sprites_game2(global_s *all)
@@ -143,18 +154,24 @@ void init_list(global_s *all)
     all->sprite.game.list_enemy2 = NULL;
     all->sprite.game.list_enemy3 = NULL;
     all->sprite.game.list_enemy4 = NULL;
+    all->sprite.game.list_enemy5 = NULL;
+    all->sprite.game.list_enemy6 = NULL;
+
 }
 
 void create_sprites_game(global_s *all)
 {
     all->sprite.game.e1 = 0;
     info_base(all);
+    all->sprite.game.cl_pow = create_one_clock();
     init_list(all);
     all->sprite.game.list_tow = fill_list_tow(all);
     all->sprite.game.list_enemy = fill_enemy(all);
     all->sprite.game.list_enemy2 = fill_enemy_2(all);
     all->sprite.game.list_enemy3 = fill_enemy_3(all);
     all->sprite.game.list_enemy4 = fill_enemy_4(all);
+    all->sprite.game.list_enemy5 = fill_enemy_3_rev(all);
+    all->sprite.game.list_enemy6 = fill_enemy_4_rev(all);
     all->rect_e = malloc(sizeof(rect_e));
     create_sprites_game2(all);
 }

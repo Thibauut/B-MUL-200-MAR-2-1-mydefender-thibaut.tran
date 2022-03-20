@@ -48,6 +48,7 @@ SRC 	= 	src/create_struct.c		\
 			game/bg_game.c	\
 			src/free_game.c		\
 			game/print_weapons.c	\
+			game/print_weapons2.c	\
 			game/rect_collision.c	\
 			game/anim_enemy.c	\
 			game/collision_enemy.c	\
