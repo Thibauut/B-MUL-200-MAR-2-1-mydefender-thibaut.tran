@@ -34,13 +34,13 @@ int dmg(int type, int base)
     switch (type)
     {
         case 1:
-            dmg = 10;
-            break;
-        case 2:
             dmg = 15;
             break;
+        case 2:
+            dmg = 25;
+            break;
         case 3:
-            dmg = 40;
+            dmg = 70;
             break;
         case 4:
             dmg = 30;
@@ -48,8 +48,6 @@ int dmg(int type, int base)
     }
     if (base == ATTACK)
         dmg = dmg * 1.3;
-    if (base == DEFENSIVE)
-        dmg = dmg * 0.8;
     return (dmg);
 }
 

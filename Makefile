@@ -67,6 +67,9 @@ SRC 	= 	src/create_struct.c				\
 			game/rect_collision2.c			\
 			game/anim_enemy.c				\
 			game/anim_enemy2.c				\
+			game/anim_enemy3.c				\
+			game/anim_enemy4.c				\
+			game/anim_enemy5.c				\
 			game/collision_enemy.c			\
 			game/collision_enemy2.c			\
 			game/pause_game.c				\

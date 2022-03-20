@@ -19,9 +19,9 @@ void super_power(global_s *all)
     int len_mecha = list_len_2(en), len_mecha_rev = list_len_2(en2);
     int len_jet = list_len_2(en3), len_jet_rev = list_len_2(en5);
     int len_car = list_len_2(en4), len_car_rev = list_len_2(en6);
-    if (all->sprite.game.blood >= 900) {
+    if (all->sprite.game.blood >= 800) {
         sfClock_restart(all->sprite.game.cl_pow.clock);
-        all->sprite.game.blood -= 900, all->sprite.game.power = True;
+        all->sprite.game.blood -= 800, all->sprite.game.power = True;
         if (len_mecha > 1)
             free_element_at(en, len_mecha - 1);
         if (len_mecha_rev > 1)
@@ -67,7 +67,7 @@ void check_events_game(global_s *all)
         }
         if (sfKeyboard_isKeyPressed(sfKeyS))
             super_power(all);
-        if (sfKeyboard_isKeyPressed(sfKeyH) && all->sprite.game.blood >= 1000)
+        if (sfKeyboard_isKeyPressed(sfKeyH) && all->sprite.game.blood >= 800)
             refresh_life_base(all, 10000);
         if (all->event->type == sfEvtKeyPressed
         && all->event->key.code == sfKeyEscape) {
